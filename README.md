@@ -1,6 +1,6 @@
 # SmartBoxRAIN
 Repository for Smart Box project
-![Language](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png)
+![Language](https://img.shields.io/badge/language-ReactJs-61DAFB?logo=react&logoColor=white&style=flat)
 
 App is designed to log smart box uses and work with Direct4me API.
 
