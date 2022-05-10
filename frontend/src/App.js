@@ -3,8 +3,26 @@ import React, {Component} from "react";
 //import {useState, useEffect} from 'react';
 import Header from "./components/Header";
 //import Photos from './components/photos';
+import styled from "styled-components";
+import SignIn from "./components/Login"
+import SignUp from "./components/Register"
 
-class App extends Component {
+const AppContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+function App() {
+  return (
+      <AppContainer>
+        <SignUp/>
+      </AppContainer>
+  );
+}
+class Apps extends Component {
   //const [photos, setPhotos] = useState([]);
   /*   useEffect(function(){
     const getPhotos = async function(){
@@ -35,7 +53,6 @@ class App extends Component {
       <div className="App">
         <Header name="Trivialci" />
         <p className="App-intro">{this.state.apiResponse}</p>
-        {/* <Photos photos={photos}/> */}
       </div>
     );
   }
