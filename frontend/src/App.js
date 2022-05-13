@@ -6,6 +6,8 @@ import Header from "./components/Header";
 import styled from "styled-components";
 import SignIn from "./components/Login"
 import SignUp from "./components/Register"
+import BasicTable from "./components/BoxViewTable";
+import BoxViewPage from "./components/BoxViewPage";
 
 const AppContainer = styled.div`
   width: 100%;
@@ -18,7 +20,7 @@ const AppContainer = styled.div`
 function App() {
   return (
       <AppContainer>
-        <SignUp/>
+        <BoxViewPage/>
       </AppContainer>
   );
 }
