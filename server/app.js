@@ -5,11 +5,13 @@ var cookieParser = require('cookie-parser');
 var cors = require('cors')
 var logger = require('morgan');
 var mongoose = require('mongoose')
-var mongoDB = 'mongodb+srv://Trivialec:Trivial2022smartbox.@cluster0.liqum.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
-mongoose.connect(mongoDB, {useNewUrlParser:true});
+require('dotenv').config()
+
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser:true});
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error'))
+
 var indexRouter = require('./routes/index');
 var usersRouter = require("./routes/userRoutes");
 var testApiRouter = require("./routes/testApi");
