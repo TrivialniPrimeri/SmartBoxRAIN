@@ -102,16 +102,6 @@ export default function SignUp() {
                                 Sign up
                             </Button>
                         </Box>
-                        <Grid container justifyContent="center">
-                            <Grid item>
-                                <MutedLink href="#">
-                                    Already have account?{" "}
-                                    <BoldLink href="#" onClick="">
-                                        Login
-                                    </BoldLink>
-                                </MutedLink>
-                            </Grid>
-                        </Grid>
                     </Box>
                 </Box>
             </Container>

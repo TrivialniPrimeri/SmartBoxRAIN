@@ -1,61 +1,37 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import React, {Component} from "react";
-//import {useState, useEffect} from 'react';
+import React from "react";
+import {useState, useEffect} from 'react';
 import Header from "./components/Header";
+import { UserContext } from "./userContext";
 //import Photos from './components/photos';
-import styled from "styled-components";
 import SignIn from "./components/Login"
 import SignUp from "./components/Register"
 
-const AppContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
 function App() {
+
+  const [user, setUser] = useState(localStorage.user ? JSON.parse(localStorage.user) : null);
+  const updateUserData = (userInfo) => {
+    localStorage.setItem("user", JSON.stringify(userInfo));
+    setUser(userInfo);
+  }
+
   return (
-      <AppContainer>
-        <SignUp/>
-      </AppContainer>
+    <BrowserRouter>
+    <UserContext.Provider value={{
+        user: user,
+        setUserContext: updateUserData
+      }}>
+        <div className="App">
+          <Header title="Spletni portal"></Header>
+          <Routes>
+            <Route path="/" exact element={<SignIn />}></Route>
+            <Route path="/login" exact element={<SignIn />}></Route>
+            <Route path="/register" exact element={<SignUp />}></Route>
+          </Routes>
+        </div>
+      </UserContext.Provider>
+    </BrowserRouter>
   );
-}
-class Apps extends Component {
-  //const [photos, setPhotos] = useState([]);
-  /*   useEffect(function(){
-    const getPhotos = async function(){
-      const res = await fetch('http://localhost:3001/photos')
-      const data = await res.json();
-      console.log(data);
-      setPhotos(data);
-    };
-    getPhotos(); //tak se klice api
-  }, []); */
-  constructor(props) {
-    super(props);
-    this.state = { apiResponse: "" };
-  }
-
-  callAPI() {
-    fetch("http://localhost:9000/testAPI")
-      .then((res) => res.text())
-      .then((res) => this.setState({ apiResponse: res }))
-      .catch((err) => err);
-  }
-
-  componentDidMount() {
-    this.callAPI();
-  }
-  render() {
-    return (
-      <div className="App">
-        <Header name="Trivialci" />
-        <p className="App-intro">{this.state.apiResponse}</p>
-      </div>
-    );
-  }
 }
 
 export default App;

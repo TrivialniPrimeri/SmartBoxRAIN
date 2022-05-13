@@ -72,19 +72,6 @@ export default function SignIn() {
                                 Login
                             </Button>
                         </Box>
-
-                        <Grid container spacing={3}>
-                            <Grid item xs/>
-                            <Grid item xs={6}>
-                                <MutedLink href="#">
-                                    Don't have an account?{" "}
-                                    <BoldLink href="#" onClick="">
-                                        Signup
-                                    </BoldLink>
-                                </MutedLink>
-                            </Grid>
-                            <Grid item xs/>
-                        </Grid>
                     </Box>
                 </Box>
             </Container>
