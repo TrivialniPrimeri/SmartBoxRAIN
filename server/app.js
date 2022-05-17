@@ -15,6 +15,8 @@ db.on('error', console.error.bind(console, 'MongoDB connection error'))
 var indexRouter = require('./routes/index');
 var usersRouter = require("./routes/userRoutes");
 var testApiRouter = require("./routes/testApi");
+var boxesRouter = require("./routes/boxRoutes");
+var unlocksRouter = require("./routes/unlockRoutes");
 var app = express();
 
 // view engine setup
@@ -31,6 +33,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/testAPI', testApiRouter);
+app.use('/boxes', boxesRouter);
+app.use('/unlocks', unlocksRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -44,7 +48,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json({status:"Error"});
 });
 
 module.exports = app;
