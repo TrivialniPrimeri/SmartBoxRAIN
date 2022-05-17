@@ -6,7 +6,6 @@ var userSchema = new Schema(
     name: String,
     surname: String,
     phone: String,
-    address: String,
     username: String,
     email: String,
     password: String,
@@ -30,8 +29,8 @@ var userSchema = new Schema(
     timestamps: true,
   }
 );
-userSchema.statics.authenticate = function (username, password, callback) {
-  user.findOne({ username: username }).exec(function (err, user) {
+userSchema.statics.authenticate = function (email, password, callback) {
+  user.findOne({ email: email }).exec(function (err, user) {
     if (err) {
       return callback(err);
     } else if (!user) {
@@ -50,6 +49,7 @@ userSchema.statics.authenticate = function (username, password, callback) {
 };
 userSchema.pre("save", function (next) {
   var user = this;
+  if (!user.isModified('password')) return next(); // prevents rehashing
   bcrypt.hash(user.password, 10, function (err, hash) {
     if (err) {
       return next(err);

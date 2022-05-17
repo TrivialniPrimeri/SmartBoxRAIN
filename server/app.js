@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var cors = require('cors')
 var logger = require('morgan');
 var mongoose = require('mongoose')
+const MongoStore = require('connect-mongo');
+const session = require('express-session');
 require('dotenv').config()
 
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser:true});
@@ -17,24 +19,48 @@ var usersRouter = require("./routes/userRoutes");
 var testApiRouter = require("./routes/testApi");
 var boxesRouter = require("./routes/boxRoutes");
 var unlocksRouter = require("./routes/unlockRoutes");
+var authRouter = require("./routes/authRoutes");
+
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+const allowedOrigins = ['http://localhost', 'http://localhost:81'];
+app.use(cors({
+	credentials: true,
+	origin(origin, callback) {
+	// Allow requests with no origin (mobile apps, curl)
+		if (!origin) return callback(null, true);
+		if (allowedOrigins.indexOf(origin) === -1) {
+			const msg = 'The CORS policy does not allow access from the specified Origin.';
+			return callback(new Error(msg), false);
+		}
+		return callback(null, true);
+	},
+})); //	default allow *
+
 app.use(logger('dev'));
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+	secret: 'trivialci',
+	resave: true,
+	saveUninitialized: false,
+	store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+}));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/testAPI', testApiRouter);
 app.use('/boxes', boxesRouter);
 app.use('/unlocks', unlocksRouter);
+app.use('/auth', authRouter);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

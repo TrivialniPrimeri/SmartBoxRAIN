@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,19 +11,44 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {BoldLink, MutedLink} from "./common";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import axios from 'axios';
+import { InputLabel } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 
 const theme = createTheme();
 
 export default function SignUp() {
+
+    const [error, setError] = useState("");
+    const [data, setData] = useState({
+		firstName: '',
+		lastName: '',
+		phone: '',
+		address: '',
+		email: '',
+		password: '',
+		passwordConfirm: '',
+	});
+    const navigator = useNavigate();
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
+        if(data.password !== data.passwordConfirm) {
+            setError("Passwords do not match!");
+        }
+        axios.post('http://localhost:81/auth/register', data, { withCredentials: true }).then((resp) => {
+            setError("")
+            navigator('/login');
+        }).catch((err) => {
+            setError(err.response.data.message);
         });
     };
+
+    const handleChange = (event) => {
+		const {name, value} = event.target;
+		setData({...data, [name]: value}); //vzame staro vrednost in updata samo novo
+	}
 
     return (
         <ThemeProvider theme={theme}>
@@ -41,7 +66,7 @@ export default function SignUp() {
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -52,6 +77,7 @@ export default function SignUp() {
                                     id="firstName"
                                     label="First Name"
                                     autoFocus
+                                    onChange={handleChange}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -62,6 +88,27 @@ export default function SignUp() {
                                     label="Last Name"
                                     name="lastName"
                                     autoComplete="family-name"
+                                    onChange={handleChange}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    autoComplete="phone"
+                                    name="phone"
+                                    fullWidth
+                                    id="phone"
+                                    label="Phone"
+                                    onChange={handleChange}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    fullWidth
+                                    id="address"
+                                    label="Address"
+                                    name="address"
+                                    autoComplete="address"
+                                    onChange={handleChange}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -72,6 +119,7 @@ export default function SignUp() {
                                     label="Email Address"
                                     name="email"
                                     autoComplete="email"
+                                    onChange={handleChange}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -82,6 +130,7 @@ export default function SignUp() {
                                     label="Password"
                                     type="password"
                                     id="password"
+                                    onChange={handleChange}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -102,6 +151,7 @@ export default function SignUp() {
                                 Sign up
                             </Button>
                         </Box>
+                        <InputLabel color={'warning'}>{error}</InputLabel>
                     </Box>
                 </Box>
             </Container>

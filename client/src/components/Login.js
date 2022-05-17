@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -13,19 +12,40 @@ import {
     MutedLink
 } from "./common"
 
+import axios from 'axios';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { InputLabel } from '@mui/material';
 
 
 const theme = createTheme();
 
 export default function SignIn() {
+
+    const navigator = useNavigate();
+
+    const [error, setError] = useState("");
+    const [data, setData] = useState({
+        email: '',
+        password: '',
+    });
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
+        axios.post('http://localhost:81/auth/login', data).then((resp) => {
+            setError("");
+            navigator('/');
+        }).catch((err) => {
+            console.log(err);
+            setError(err.response.data.message);
         });
     };
+
+    const handleChange = (event) => {
+		const {name, value} = event.target;
+		setData({...data, [name]: value}); //vzame staro vrednost in updata samo novo
+	}
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -54,6 +74,7 @@ export default function SignIn() {
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            onChange={handleChange}
                         />
                         <TextField
                             margin="normal"
@@ -64,6 +85,7 @@ export default function SignIn() {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            onChange={handleChange}
                         />
                         <Box textAlign='center' >
                             <Button variant='contained'
@@ -72,6 +94,7 @@ export default function SignIn() {
                                 Login
                             </Button>
                         </Box>
+                        <InputLabel color={'warning'}>{error}</InputLabel>
                     </Box>
                 </Box>
             </Container>
