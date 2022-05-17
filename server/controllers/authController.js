@@ -9,8 +9,9 @@ module.exports = {
 			if(error || !user){
 				res.status(500).json({success: false, message: "Wrong username or password"});
 			} else{
-				req.session.userId = user._id;
-				res.json({success: true, message: "Successfully logged in"});
+				const userObj = { email: user.email };
+				const accessToken = jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET);
+				res.json({success: true, message: "Successfully logged in", token: accessToken});
 			}
 		 });
     },

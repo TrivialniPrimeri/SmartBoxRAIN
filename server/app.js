@@ -5,8 +5,6 @@ var cookieParser = require('cookie-parser');
 var cors = require('cors')
 var logger = require('morgan');
 var mongoose = require('mongoose')
-const MongoStore = require('connect-mongo');
-const session = require('express-session');
 require('dotenv').config()
 
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser:true});
@@ -47,18 +45,23 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({
-	secret: 'trivialci',
-	resave: true,
-	saveUninitialized: false,
-	store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
-}));
+function checkAuth(req, res, next){
+  const header = req.headers['authorization']; //Bearer <token>
+  const token = header && header.split(' ')[1];
+  if (token == null) return res.sendStatus(401);
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/testAPI', testApiRouter);
-app.use('/boxes', boxesRouter);
-app.use('/unlocks', unlocksRouter);
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user; //saves user data!
+    next();
+  });
+}
+
+app.use('/', checkAuth, indexRouter);
+app.use('/users', checkAuth, usersRouter);
+app.use('/testAPI', checkAuth, testApiRouter);
+app.use('/boxes', checkAuth, boxesRouter);
+app.use('/unlocks', checkAuth, unlocksRouter);
 app.use('/auth', authRouter);
 
 // catch 404 and forward to error handler
