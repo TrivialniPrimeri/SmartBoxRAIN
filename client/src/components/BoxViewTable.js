@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -45,7 +44,7 @@ const StyledTableContainer= styled(TableContainer)(({ theme }) => ({
 }));
 
 function createData(name) {
-    return { name};
+    return { name };
 }
 
 const rows = [
@@ -56,7 +55,8 @@ const rows = [
     createData('ed8bcb5f-3982-4856-88c8-9aca9d996dd5'),
 ];
 
-function BasicTable() {
+
+function BasicTable() {    
 
     return (
         <StyledTableContainer component={Paper}>

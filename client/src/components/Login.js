@@ -12,10 +12,12 @@ import {
     MutedLink
 } from "./common"
 
-import axios from 'axios';
-import { useState } from 'react';
+import axios from '../axios';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { InputLabel } from '@mui/material';
+import { UserContext } from '../userContext';
+import jwt_decode from 'jwt-decode';
 
 
 const theme = createTheme();
@@ -23,6 +25,7 @@ const theme = createTheme();
 export default function SignIn() {
 
     const navigator = useNavigate();
+    const userCxt = useContext(UserContext);
 
     const [error, setError] = useState("");
     const [data, setData] = useState({
@@ -32,7 +35,11 @@ export default function SignIn() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('http://localhost:81/auth/login', data).then((resp) => {
+        axios.post('/auth/login', data).then((resp) => {
+            console.log(resp);
+            let decoded = jwt_decode(resp.data.accessToken);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${resp.data.accessToken}`;
+            userCxt.setUserContext({user: decoded.email});
             setError("");
             navigator('/');
         }).catch((err) => {

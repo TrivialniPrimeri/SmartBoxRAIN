@@ -11,7 +11,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {BoldLink, MutedLink} from "./common";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import axios from 'axios';
+import axios from '../axios';
 import { InputLabel } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
@@ -37,7 +37,7 @@ export default function SignUp() {
         if(data.password !== data.passwordConfirm) {
             setError("Passwords do not match!");
         }
-        axios.post('http://localhost:81/auth/register', data, { withCredentials: true }).then((resp) => {
+        axios.post('/auth/register', data).then((resp) => {
             setError("")
             navigator('/login');
         }).catch((err) => {

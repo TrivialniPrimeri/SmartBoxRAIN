@@ -6,13 +6,13 @@ var cors = require('cors')
 var logger = require('morgan');
 var mongoose = require('mongoose')
 require('dotenv').config()
+const jwt = require("jsonwebtoken");
 
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser:true});
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error'))
 
-var indexRouter = require('./routes/index');
 var usersRouter = require("./routes/userRoutes");
 var testApiRouter = require("./routes/testApi");
 var boxesRouter = require("./routes/boxRoutes");
@@ -48,6 +48,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 function checkAuth(req, res, next){
   const header = req.headers['authorization']; //Bearer <token>
   const token = header && header.split(' ')[1];
+
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
@@ -56,13 +57,11 @@ function checkAuth(req, res, next){
     next();
   });
 }
-
-app.use('/', checkAuth, indexRouter);
+app.use('/auth', authRouter);
 app.use('/users', checkAuth, usersRouter);
 app.use('/testAPI', checkAuth, testApiRouter);
 app.use('/boxes', checkAuth, boxesRouter);
 app.use('/unlocks', checkAuth, unlocksRouter);
-app.use('/auth', authRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -77,7 +76,8 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.json({status:"Error"});
+  console.log(err);
+  res.json(err);
 });
 
 module.exports = app;

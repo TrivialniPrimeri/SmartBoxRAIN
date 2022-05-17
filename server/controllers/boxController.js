@@ -11,6 +11,7 @@ module.exports = {
      * boxController.list()
      */
     list: function (req, res) {
+        return res.json({test: true})
         BoxModel.find(function (err, boxs) {
             if (err) {
                 return res.status(500).json({
