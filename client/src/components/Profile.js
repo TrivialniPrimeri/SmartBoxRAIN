@@ -20,6 +20,7 @@ function Profile() {
   const [profile, setProfile] = useState({});
 
   useEffect(function () {
+    console.log(userContext.user);
     axios
       .get("/users/" + userContext.user.id)
       .then((resp) => {
@@ -42,7 +43,7 @@ function Profile() {
             alignItems: "center",
           }}
         >
-          <Card sx={{ maxWidth: 400 }}>
+          <Card>
             <CardMedia
               component="img"
               alt="profile picture"

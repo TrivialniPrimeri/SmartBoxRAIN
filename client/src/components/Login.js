@@ -39,7 +39,7 @@ export default function SignIn() {
             console.log(resp);
             let decoded = jwt_decode(resp.data.accessToken);
             axios.defaults.headers.common['Authorization'] = `Bearer ${resp.data.accessToken}`;
-            userCxt.setUserContext({email: decoded.email, id: decoded.id});
+            userCxt.setUserContext({email: decoded.email, id: decoded.id, admin: decoded.isAdmin});
             setError("");
             navigator('/');
         }).catch((err) => {
