@@ -43,6 +43,6 @@ module.exports = {
     },
 
 	logout: function (req, res) {
-		//delete refresh tokens from DB for that user! todo
+		res.clearCookie('accessToken').clearCookie('refreshToken').sendStatus(200);
 	},
 }

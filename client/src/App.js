@@ -7,6 +7,7 @@ import { UserContext } from "./userContext";
 import SignIn from "./components/Login"
 import SignUp from "./components/Register"
 import BoxViewPage from './components/BoxViewPage';
+import Logout from "./components/Logout";
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
             <Route path="/" exact element={<BoxViewPage />}></Route>
             <Route path="/login" exact element={<SignIn />}></Route>
             <Route path="/register" exact element={<SignUp />}></Route>
+            <Route path="/logout" exact element={<Logout />}></Route>
           </Routes>
         </div>
       </UserContext.Provider>

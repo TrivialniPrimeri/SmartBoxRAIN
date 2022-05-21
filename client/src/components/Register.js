@@ -36,6 +36,7 @@ export default function SignUp() {
         event.preventDefault();
         if(data.password !== data.passwordConfirm) {
             setError("Passwords do not match!");
+            return;
         }
         axios.post('/auth/register', data).then((resp) => {
             setError("")
@@ -141,6 +142,7 @@ export default function SignUp() {
                                     label="Confirm Password"
                                     type="password"
                                     id="passwordConfirm"
+                                    onChange={handleChange}
                                 />
                             </Grid>
                         </Grid>
