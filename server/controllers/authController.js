@@ -13,7 +13,7 @@ module.exports = {
 			if(error || !user){
 				res.status(500).json({success: false, message: "Wrong username or password"});
 			} else{
-				const userObj = { email: user.email };
+				const userObj = { email: user.email, id: user._id };
 				const accessToken = generateAccToken(userObj);
 				const refreshToken = jwt.sign(userObj, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "200d" });
 				res
