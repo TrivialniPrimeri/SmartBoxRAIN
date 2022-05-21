@@ -47,7 +47,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 function checkAuth(req, res, next){
   const header = req.headers['authorization']; //Bearer <token>
-  const token = header && header.split(' ')[1];
+  const token = (header && header.split(' ')[1]) || (req.cookies.accessToken);
 
   if (token == null) return res.sendStatus(401);
 
