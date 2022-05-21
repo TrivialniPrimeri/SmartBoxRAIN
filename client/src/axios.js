@@ -11,7 +11,7 @@ instance.interceptors.response.use(
 	}, 
 	async (err) => {
 		const originalRequest = err.config;
-		if(err.response.status === 401 && !originalRequest._retry){ //unauthorized
+		if((err.response.status === 401 || err.response.status === 403) && !originalRequest._retry){ //unauthorized
 			originalRequest._retry = true;
 			instance.baseURL = undefined;
 			if(originalRequest.data) originalRequest.data = JSON.parse(originalRequest.data)

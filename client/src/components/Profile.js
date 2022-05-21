@@ -12,13 +12,52 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import InventoryIcon from "@mui/icons-material/Inventory";
-import {Badge, IconButton, makeStyles, tableCellClasses, Tooltip,} from "@mui/material";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import {
+  Badge,
+  IconButton,
+  makeStyles,
+  tableCellClasses,
+  Tooltip,
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-
+import Modal from "@mui/material/Modal";
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
+};
 function Profile() {
   const userContext = useContext(UserContext);
   const [profile, setProfile] = useState({});
-
+  const [open, setOpen] = React.useState(false);
+  const [error, setError] = useState("");
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const [data, setData] = useState({
+    firstName: "",
+    lastName: "",
+    phone: "",
+    address: "",
+  });
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    console.log(data);
+    setData({ ...data, [name]: value }); //vzame staro vrednost in updata samo novo
+  };
   useEffect(function () {
     console.log(userContext.user);
     axios
@@ -31,6 +70,18 @@ function Profile() {
         console.log(err);
       });
   }, []);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    axios.put('/users/'+userContext.user.id, data).then((resp) => {
+        setError("");
+        console.log("Uspesno posodobljeno");
+        setOpen(false);
+        setProfile(resp.data);
+    }).catch((err) => {
+        setError(err.response.data.message);
+    });
+};
 
   return (
     <>
@@ -73,7 +124,7 @@ function Profile() {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Edit profile">
-                  <IconButton aria-label="Edit profile">
+                  <IconButton aria-label="Edit profile" onClick={handleOpen}>
                     <EditIcon color="primary.dark" />
                   </IconButton>
                 </Tooltip>
@@ -82,6 +133,66 @@ function Profile() {
           </Card>
         </Box>
       </Container>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box sx={{ ...style, width: 400 }}>
+          <h2 id="parent-modal-title">Urejanje</h2>
+          <p id="parent-modal-description">Tukaj lahko uredite svoj profil</p>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              autoFocus
+              required
+              fullWidth
+              id="firstName"
+              label="First Name"
+              name="firstName"
+              //value={profile.name}
+              autoComplete="given-name"
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} mt={1}>
+            <TextField
+              required
+              fullWidth
+              id="lastName"
+              label="Last Name"
+              name="lastName"
+              //value={profile.surname}
+              autoComplete="family-name"
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} mt={1}>
+            <TextField
+              fullWidth
+              id="phone"
+              label="Phone"
+              name="phone"
+              //value={profile.phone}
+              autoComplete="phone"
+              onChange={handleChange}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6} mt={1}>
+            <TextField
+              fullWidth
+              id="address"
+              label="Address"
+              name="address"
+              //value={profile.address}
+              autoComplete="address"
+              onChange={handleChange}
+            />
+          </Grid>
+          <Button onClick={handleSubmit}>Confirm</Button>
+        </Box>
+      </Modal>
     </>
   );
 }
