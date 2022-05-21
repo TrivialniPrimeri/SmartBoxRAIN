@@ -29,6 +29,9 @@ function Header(props){
                         <ListItemText primary="Home"/>
                     </ListItemButton>
                     {userCxt.user ? <>
+                    <ListItemButton component={Link} to="/profile" className="activeMenu" >
+                        <ListItemText primary="Profile"/>
+                    </ListItemButton>
                     </> : <>
                         <ListItemButton component={Link} to="/login">
                             <ListItemText primary="Login" />
