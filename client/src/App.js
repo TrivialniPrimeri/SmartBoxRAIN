@@ -9,6 +9,7 @@ import SignUp from "./components/Register";
 import Profile from "./components/Profile";
 import BoxViewPage from './components/BoxViewPage';
 import Logout from "./components/Logout";
+import BoxViewSingle from "./components/BoxViewSingle";
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
             <Route path="/register" exact element={<SignUp />}></Route>
             <Route path="/profile" exact element={<Profile/>}></Route>
             <Route path="/logout" exact element={<Logout />}></Route>
+            <Route path="/box/:id" exact element={<BoxViewSingle />}></Route>
           </Routes>
         </div>
       </UserContext.Provider>

@@ -16,6 +16,8 @@ import ViewIcon from '@mui/icons-material/FindInPage';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import Typography from "@mui/material/Typography";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import {Link} from "react-router-dom";
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -106,6 +108,9 @@ function BasicTable() {
                                 <ViewIcon/>
                             </IconButton>
                                 </Tooltip>
+                                <Link to={{
+                                    pathname: `/box/6289497e828241606f611307`,
+                                }} >ZAKA</Link>
                             </StyledTableCell>
                             <StyledTableCell align="left">
                                 <Tooltip title="Edit">
