@@ -92,8 +92,8 @@ module.exports = {
         });
       }
       console.log(req.body);
-      user.name = req.body.firstName ? req.body.firstName : user.firstName;
-      user.surname = req.body.lastName ? req.body.lastName : user.lastName;
+      user.name = req.body.name ? req.body.name : user.name;
+      user.surname = req.body.surname ? req.body.surname : user.surname;
       user.phone = req.body.phone ? req.body.phone : user.phone;
       user.address = req.body.address ? req.body.address : user.address;
       user.email = req.body.email ? req.body.email : user.email;

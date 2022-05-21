@@ -30,7 +30,6 @@ const style = {
 };
 function Profile() {
   const userContext = useContext(UserContext);
-  const [profile, setProfile] = useState({});
   const [open, setOpen] = React.useState(false);
   const [error, setError] = useState("");
   const handleOpen = () => {
@@ -40,21 +39,31 @@ function Profile() {
     setOpen(false);
   };
   const [data, setData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
+    surname: "",
     phone: "",
     address: "",
   });
+
+  const [formData, setFormData] = useState({
+    name: "",
+    surname: "",
+    phone: "",
+    address: "",
+  });
+
+
   const handleChange = (event) => {
     const { name, value } = event.target;
-    console.log(data);
-    setData({ ...data, [name]: value }); //vzame staro vrednost in updata samo novo
+    setFormData({ ...data, [name]: value }); //vzame staro vrednost in updata samo novo
   };
+
   useEffect(function () {
     axios
       .get("/users/" + userContext.user.id)
       .then((resp) => {
-        setProfile(resp.data);
+        setFormData(resp.data);
+        setData(resp.data);
       })
       .catch((err) => {
         console.log(err);
@@ -63,11 +72,11 @@ function Profile() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.put('/users/'+userContext.user.id, data).then((resp) => {
+    axios.put('/users/'+userContext.user.id, formData).then((resp) => {
         setError("");
         console.log("Uspesno posodobljeno");
         setOpen(false);
-        setProfile(resp.data);
+        setData(resp.data);
     }).catch((err) => {
         setError(err.response.data.message);
     });
@@ -93,19 +102,19 @@ function Profile() {
             />
             <CardContent>
               <Typography gutterBottom variant="h4" component="div">
-                {profile.name}'s profile
+                {data.name}'s profile
               </Typography>
               <Typography variant="body1" color="text.secondary">
-                Full name: {profile.name} {profile.surname}
+                Full name: {data.name} {data.surname}
               </Typography>
               <Typography variant="body1" color="text.secondary">
-                Email: {profile.email}
+                Email: {data.email}
               </Typography>
               <Typography variant="body1" color="text.secondary">
-                Address: {profile.address}
+                Address: {data.address}
               </Typography>
               <Typography variant="body1" color="text.secondary">
-                Phone number: {profile.phone}
+                Phone number: {data.phone}
               </Typography>
               <CardActions>
                 <Tooltip title="My boxes">
@@ -130,8 +139,7 @@ function Profile() {
         aria-describedby="parent-modal-description"
       >
         <Box sx={{ ...style, width: 400 }}>
-          <h2 id="parent-modal-title">Urejanje</h2>
-          <p id="parent-modal-description">Tukaj lahko uredite svoj profil</p>
+          <h2 id="parent-modal-title">Edit your profile</h2>
           <Grid item xs={12} sm={6}>
             <TextField
               autoFocus
@@ -139,8 +147,8 @@ function Profile() {
               fullWidth
               id="firstName"
               label="First Name"
-              name="firstName"
-              //value={profile.name}
+              name="name"
+              value={formData.name}
               autoComplete="given-name"
               onChange={handleChange}
             />
@@ -151,8 +159,8 @@ function Profile() {
               fullWidth
               id="lastName"
               label="Last Name"
-              name="lastName"
-              //value={profile.surname}
+              name="surname"
+              value={formData.surname}
               autoComplete="family-name"
               onChange={handleChange}
             />
@@ -163,7 +171,7 @@ function Profile() {
               id="phone"
               label="Phone"
               name="phone"
-              //value={profile.phone}
+              value={formData.phone}
               autoComplete="phone"
               onChange={handleChange}
             />
@@ -175,7 +183,7 @@ function Profile() {
               id="address"
               label="Address"
               name="address"
-              //value={profile.address}
+              value={formData.address}
               autoComplete="address"
               onChange={handleChange}
             />
