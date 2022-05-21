@@ -1,3 +1,4 @@
+import { useContext, useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -18,7 +19,10 @@ import Typography from "@mui/material/Typography";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AuthorizedIcon from '@mui/icons-material/GppGood';
 import OwnerIcon from '@mui/icons-material/ContactPage';
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+import { UserContext } from "../userContext";
+import axios from "../axios";
+import {useParams} from "react-router-dom";
 
 
 
@@ -46,8 +50,19 @@ const StyledTableContainer= styled(TableContainer)(({ theme }) => ({
     '&:nth-of-type(odd)': {
         borderRadius: 15,
     }
-}));
 
+}));
+const HtmlTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+        backgroundColor: '#f5f5f9',
+        color: 'rgba(0, 0, 0, 0.87)',
+        maxWidth: 220,
+        fontSize: theme.typography.pxToRem(12),
+        border: '1px solid #fffff1',
+    },
+}));
 function createData(name) {
     return { name };
 }
@@ -61,6 +76,22 @@ const rows = [
 
 
 function BoxViewSingle() {
+    const userContext = useContext(UserContext);
+    const [box, setBox] = useState({});
+    const { id } = useParams()
+
+    useEffect(function () {
+        console.log(id);
+        axios
+            .get("/box/" + id)
+            .then((resp) => {
+                console.log(resp.data);
+                setBox(resp.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
 
     return (
         <StyledTableContainer component={Paper}>
@@ -82,7 +113,7 @@ function BoxViewSingle() {
                             </TableCell>
                             <TableCell component="th" scope="row">
                                 <Typography sx={{m:1}}>
-                                    338f4cba-655f-43d2-b9ff-eeceb93f0f88
+                                    {box._id}
                                 </Typography>
                             </TableCell>
                         </TableRow>
@@ -95,13 +126,24 @@ function BoxViewSingle() {
                             </Typography>
                         </TableCell>
                         <TableCell component="th" scope="row">
-                            <Tooltip title="6283e401da58ff81c0e5ab3f">
-
-                            <IconButton aria-label="owner" >
-                                <OwnerIcon/>
-                            </IconButton>
-                            </Tooltip>
-                        Matic Sulc
+                            <HtmlTooltip
+                                title={
+                                    <>
+                                        <Typography  color="inherit" sx={{mb:1}}>Information</Typography>
+                                             <p> {box.owner?.email}</p>
+                                             <p> {box.owner?.phone}</p>
+                                             <p> {box.owner?._id}</p>
+                                    </>
+                                }
+                                placement="right"
+                            >
+                                <IconButton aria-label="owner" >
+                                    <OwnerIcon/>
+                                </IconButton>
+                            </HtmlTooltip>
+                            <span>{box.owner?.name}</span>
+                            <span>&nbsp;</span>
+                            <span>{box.owner?.surname}</span>
                         </TableCell>
                     </TableRow>
                     <TableRow
@@ -137,7 +179,7 @@ function BoxViewSingle() {
                                     bgcolor: "transparent"
                                 }
                             }}> <AuthorizedIcon/> </IconButton>
-                            Andrej, Martin, Tona
+                            Andrej Martin Tona
                         </TableCell>
                     </TableRow>
                     <TableRow
@@ -150,7 +192,7 @@ function BoxViewSingle() {
                         </TableCell>
                         <TableCell component="th" scope="row">
                             <Typography sx={{m:1}}>
-                                50cm x 40cm x 30cm
+                                {box.dimension} cm
                             </Typography>
                         </TableCell>
                     </TableRow>

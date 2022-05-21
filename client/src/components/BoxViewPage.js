@@ -16,7 +16,7 @@ function BoxViewPage(){
                     flexDirection: 'column',
                     alignItems: 'center',
                 }}>
-            <BoxViewSingle/>
+            <BoxViewTable/>
             </Box>
         </Container>
     )
