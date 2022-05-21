@@ -1,7 +1,9 @@
-import BoxViewTable from "./BoxViewTable";
+import UserBoxViewTable from "./UserBoxViewTable";
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import BoxViewTable from "./BoxViewTable";
+import BoxViewSingle from "./BoxViewSingle";
 
 function BoxViewPage(){
     return(
@@ -13,7 +15,7 @@ function BoxViewPage(){
                     flexDirection: 'column',
                     alignItems: 'center',
                 }}>
-            <BoxViewTable/>
+            <BoxViewSingle/>
             </Box>
         </Container>
     )

@@ -6,16 +6,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {Badge, IconButton, makeStyles, tableCellClasses} from "@mui/material";
+import {Badge, IconButton, makeStyles, tableCellClasses, Tooltip} from "@mui/material";
 import Avatar from '@mui/material/Avatar';
 import Grid from "@mui/material/Grid";
 import InventoryIcon from '@mui/icons-material/Inventory';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import ViewIcon from '@mui/icons-material/FindInPage';
-import SwitchLabel from "./SwitchLabel";
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import Typography from "@mui/material/Typography";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -64,7 +64,6 @@ function BasicTable() {
                 <TableHead>
                     <StyledTableRow>
                         <StyledTableCell align="left">Mailboxes</StyledTableCell>
-                        <StyledTableCell />
                         <StyledTableCell align="center"/>
                         <StyledTableCell align="center"/>
                         <StyledTableCell align="center"/>
@@ -84,7 +83,7 @@ function BasicTable() {
                                     </Grid>
                                     <Grid item lg={1}>
                                        <Typography fontWeight="bold">
-                                           Id:
+                                           ID:
                                        </Typography>
                                     </Grid>
                                     <Grid item lg={10}>
@@ -96,25 +95,32 @@ function BasicTable() {
 
                             </TableCell>
                             <StyledTableCell align="left">
+                                <IconButton aria-label="location">
+                                    <LocationOnIcon/>
+                                </IconButton>
                                 Cesta proleterskih brigad 12
                             </StyledTableCell>
                             <StyledTableCell align="left">
-                                <IconButton aria-label="delete">
+                                <Tooltip title="View">
+                                <IconButton aria-label="view">
                                 <ViewIcon/>
                             </IconButton>
+                                </Tooltip>
                             </StyledTableCell>
                             <StyledTableCell align="left">
+                                <Tooltip title="Edit">
                                 <IconButton aria-label="edit">
                                 <EditIcon />
                             </IconButton>
+                                </Tooltip>
                             </StyledTableCell>
-                            <StyledTableCell align="right">
-                                <SwitchLabel/>
-                            </StyledTableCell>
-                            <StyledTableCell align="right">
+
+                            <StyledTableCell align="left">
+                                <Tooltip title="Delete">
                                 <IconButton aria-label="delete">
                                     <DeleteIcon color="error"/>
                             </IconButton>
+                                </Tooltip>
                             </StyledTableCell>
                         </TableRow>
                     ))}
