@@ -12,6 +12,6 @@ code {
     monospace;
 }
 
-.activeMenu{
+.navDrawer .active{
   color: #1976d2 !important;
 }

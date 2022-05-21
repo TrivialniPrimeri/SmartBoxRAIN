@@ -1,6 +1,6 @@
 import Button from "./Button";
 import { UserContext } from "../userContext";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { AppBar, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Stack } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
@@ -23,23 +23,23 @@ function Header(props){
                     <Typography variant="h4">Spletni portal</Typography>
                 </Stack>
             </AppBar>
-            <Drawer open={drawerState} onClose={() => setDrawerState(false)}>
+            <Drawer open={drawerState} onClose={() => setDrawerState(false)} className="navDrawer" >
                 <List>
-                    <ListItemButton component={Link} to="/" className="activeMenu" >
+                    <ListItemButton component={NavLink} to="/">
                         <ListItemText primary="Home"/>
                     </ListItemButton>
                     {userCxt.user ? <>
-                    <ListItemButton component={Link} to="/profile" className="activeMenu" >
+                    <ListItemButton component={NavLink} to="/profile" >
                         <ListItemText primary="Profile"/>
                     </ListItemButton>
-                        <ListItemButton component={Link} to="/logout" >
+                        <ListItemButton component={NavLink} to="/logout" >
                             <ListItemText primary="Logout"/>
                         </ListItemButton>
                     </> : <>
-                        <ListItemButton component={Link} to="/login" className="activeMenu">
+                        <ListItemButton component={NavLink} to="/login">
                             <ListItemText primary="Login" />
                         </ListItemButton>
-                        <ListItemButton component={Link} to="/register" className="activeMenu">
+                        <ListItemButton component={NavLink} to="/register">
                             <ListItemText primary="Register" />
                         </ListItemButton>
                     </>}
