@@ -1,22 +1,14 @@
 import { useState } from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {BoldLink, MutedLink} from "./common";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import axios from '../axios';
 import { InputLabel } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-
-
-const theme = createTheme();
 
 export default function SignUp() {
 
@@ -52,9 +44,7 @@ export default function SignUp() {
 	}
 
     return (
-        <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
-                <CssBaseline />
                 <Box
                     sx={{
                         marginTop: 8,
@@ -157,6 +147,5 @@ export default function SignUp() {
                     </Box>
                 </Box>
             </Container>
-        </ThemeProvider>
     );
 }

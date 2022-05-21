@@ -9,10 +9,9 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import InventoryIcon from "@mui/icons-material/Inventory";
-import {Badge, IconButton, makeStyles, tableCellClasses, Tooltip,} from "@mui/material";
+import {IconButton, Tooltip} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 
 function Profile() {
@@ -20,11 +19,9 @@ function Profile() {
   const [profile, setProfile] = useState({});
 
   useEffect(function () {
-    console.log(userContext.user);
     axios
       .get("/users/" + userContext.user.id)
       .then((resp) => {
-        console.log(resp.data);
         setProfile(resp.data);
       })
       .catch((err) => {
@@ -33,7 +30,6 @@ function Profile() {
   }, []);
 
   return (
-    <>
       <Container>
         <Box
           sx={{
@@ -82,7 +78,6 @@ function Profile() {
           </Card>
         </Box>
       </Container>
-    </>
   );
 }
 
