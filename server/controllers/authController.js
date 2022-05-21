@@ -13,7 +13,7 @@ module.exports = {
 			if(error || !user){
 				res.status(500).json({success: false, message: "Wrong username or password"});
 			} else{
-				const userObj = { email: user.email };
+				const userObj = { email: user.email, id: user._id, isAdmin: user.isAdmin};
 				const accessToken = generateAccToken(userObj);
 				const refreshToken = jwt.sign(userObj, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "200d" });
 				res
@@ -34,7 +34,7 @@ module.exports = {
 
 		jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => { //no blacklist so far
 			if (err) return res.sendStatus(403);
-			const accessToken = generateAccToken({email: user.email});
+			const accessToken = generateAccToken({email: user.email, id: user._id, isAdmin: user.isAdmin});
 			res
 			.cookie('accessToken', accessToken, {maxAge: 15_000, httpOnly: true, path: '/' })
 			.json({accessToken: accessToken});
@@ -43,6 +43,6 @@ module.exports = {
     },
 
 	logout: function (req, res) {
-		//delete refresh tokens from DB for that user! todo
+		res.clearCookie('accessToken').clearCookie('refreshToken').sendStatus(200);
 	},
 }

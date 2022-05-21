@@ -6,9 +6,13 @@ var userSchema = new Schema(
     name: String,
     surname: String,
     phone: String,
-    username: String,
+    address: String,
     email: String,
     password: String,
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
     favouriteBoxes: [
       {
         type: Schema.Types.ObjectId,

@@ -1,4 +1,5 @@
 var BoxModel = require('../models/boxModel.js');
+const axios = require('axios');
 
 /**
  * boxController.js
@@ -11,7 +12,6 @@ module.exports = {
      * boxController.list()
      */
     list: function (req, res) {
-        return res.json({test: true})
         BoxModel.find(function (err, boxs) {
             if (err) {
                 return res.status(500).json({
@@ -128,5 +128,21 @@ module.exports = {
 
             return res.status(204).json();
         });
-    }
+    },
+
+
+    unlock: function (req, res) {
+        const data = { "boxId": req.params.id, "tokenFormat": 5 };
+        axios.post(process.env.API_URI, data, {
+            headers: {
+                "Authorization": "Bearer " + process.env.API_KEY,
+            }
+        }
+        ).then((resp) => {
+            let data = resp.data;
+            return res.json(data)
+        }).catch((err) => {
+            return res.json(err.response)
+        })
+    },
 };

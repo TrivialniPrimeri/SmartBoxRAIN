@@ -6,6 +6,7 @@ import BoxViewTable from "./BoxViewTable";
 import BoxViewSingle from "./BoxViewSingle";
 
 function BoxViewPage(){
+
     return(
         <Container>
             <Box

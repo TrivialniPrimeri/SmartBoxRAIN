@@ -4,9 +4,11 @@ import {useState, useEffect} from 'react';
 import Header from "./components/Header";
 import { UserContext } from "./userContext";
 //import Photos from './components/photos';
-import SignIn from "./components/Login"
-import SignUp from "./components/Register"
+import SignIn from "./components/Login";
+import SignUp from "./components/Register";
+import Profile from "./components/Profile";
 import BoxViewPage from './components/BoxViewPage';
+import Logout from "./components/Logout";
 
 function App() {
 
@@ -28,6 +30,8 @@ function App() {
             <Route path="/" exact element={<BoxViewPage />}></Route>
             <Route path="/login" exact element={<SignIn />}></Route>
             <Route path="/register" exact element={<SignUp />}></Route>
+            <Route path="/profile" exact element={<Profile/>}></Route>
+            <Route path="/logout" exact element={<Logout />}></Route>
           </Routes>
         </div>
       </UserContext.Provider>

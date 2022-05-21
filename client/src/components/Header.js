@@ -1,16 +1,17 @@
 import Button from "./Button";
 import { UserContext } from "../userContext";
-import { Link } from "react-router-dom";
-import { AppBar, Drawer, IconButton, List, ListItem, ListItemButton, Stack } from "@mui/material";
+import { Link, NavLink } from "react-router-dom";
+import { AppBar, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Stack } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
-import { useState } from "react";
-
+import { useState, useContext } from "react";
 
 
 function Header(props){
 
     const [drawerState, setDrawerState] = useState(false); 
+
+    const userCxt = useContext(UserContext);
 
     return(
         <header>
@@ -22,17 +23,26 @@ function Header(props){
                     <Typography variant="h4">Spletni portal</Typography>
                 </Stack>
             </AppBar>
-            <Drawer open={drawerState} variant="persistent" onClose={() => setDrawerState(false)}>
+            <Drawer open={drawerState} onClose={() => setDrawerState(false)} className="navDrawer" >
                 <List>
-                    <ListItemButton>
-                        <Link to="/">Home</Link>
+                    <ListItemButton component={NavLink} to="/">
+                        <ListItemText primary="Home"/>
                     </ListItemButton>
-                    <ListItemButton>
-                        <Link to="/login">Login</Link>
+                    {userCxt.user ? <>
+                    <ListItemButton component={NavLink} to="/profile" >
+                        <ListItemText primary="Profile"/>
                     </ListItemButton>
-                    <ListItemButton>
-                        <Link to="/register">Register</Link>
-                    </ListItemButton>
+                        <ListItemButton component={NavLink} to="/logout" >
+                            <ListItemText primary="Logout"/>
+                        </ListItemButton>
+                    </> : <>
+                        <ListItemButton component={NavLink} to="/login">
+                            <ListItemText primary="Login" />
+                        </ListItemButton>
+                        <ListItemButton component={NavLink} to="/register">
+                            <ListItemText primary="Register" />
+                        </ListItemButton>
+                    </>}
                 </List>
             </Drawer>
         </header>
