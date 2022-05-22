@@ -16,9 +16,7 @@ instance.interceptors.response.use(
 			instance.baseURL = undefined;
 			if(originalRequest.data) originalRequest.data = JSON.parse(originalRequest.data)
 			//query for new refresh token
-			const response = await instance.post('/auth/refresh');
-			const token = response.data.accessToken;
-			axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+			await instance.post('/auth/refresh');
 			return axios(originalRequest);
 			
 		}
