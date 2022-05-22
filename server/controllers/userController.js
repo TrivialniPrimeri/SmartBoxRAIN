@@ -91,8 +91,6 @@ module.exports = {
           message: "No such user",
         });
       }
-      console.log(req.body);
-      console.log(req.file);
       user.name = req.body.name ? req.body.name : user.name;
       user.surname = req.body.surname ? req.body.surname : user.surname;
       user.phone = req.body.phone ? req.body.phone : user.phone;

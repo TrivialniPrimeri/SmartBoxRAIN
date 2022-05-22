@@ -142,7 +142,7 @@ module.exports = {
             let data = resp.data;
             return res.json(data)
         }).catch((err) => {
-            return res.json(err.response)
+            return res.json({errorNumber: err.response.status})
         })
     },
 };
