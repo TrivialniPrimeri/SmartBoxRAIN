@@ -3,7 +3,10 @@ var Schema = mongoose.Schema;
 
 var boxSchema = new Schema(
   {
-    boxId: String,
+    boxId: {
+      type: String,
+      unique: true,
+    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",

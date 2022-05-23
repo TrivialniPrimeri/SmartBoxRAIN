@@ -53,9 +53,10 @@ module.exports = {
      * boxController.create()
      */
     create: function (req, res) {
+
         var box = new BoxModel({
             boxId : req.body.boxId,
-			owner : req.user.id,
+			owner : req.user?.id,
             authorized : req.body.authorized,
 			location : req.body.location,
 			active : req.body.active,
