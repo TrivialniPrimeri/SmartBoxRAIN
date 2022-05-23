@@ -12,6 +12,8 @@ router.post('/', boxController.create);
 
 router.put('/:id', boxController.update);
 
+router.put('/:id/authorize',boxController.updateAuthorizedUsers)
+
 router.delete('/:id', boxController.remove);
 
 

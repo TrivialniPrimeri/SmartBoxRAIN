@@ -2,8 +2,9 @@ import React, {useState, useEffect, useCallback, useRef, useMemo} from 'react'
 //import Tags from './tagify/react.tagify'
 //import Tags from "@yaireo/tagify/dist/react.tagify"
 import Tags from '@yaireo/tagify/dist/react.tagify'
-import "@yaireo/tagify/dist/tagify.css" // Tagify CSS
-
+import "@yaireo/tagify/dist/tagify.css"
+import axios from "../axios";
+import {useParams} from "react-router-dom"; // Tagify CSS
 function suggestionItemTemplate(tagData) {
     return `
         <div ${this.getAttributes(tagData)}
@@ -33,9 +34,30 @@ function tagTemplate(tagData) {
     `}
 
 const TagifyWithTemplates = (props) => {
-    console.log( props.users.map(({ _id,name,surname,email}) => ({value: _id, name:name,surname:surname,email:email})))
+    const tagifyRef1 = useRef()
+    const { id } = useParams()
+    const [error, setError] = useState("");
+
+    const updateAuthorizedUsers = useCallback((e) => {
+        console.log("CHANGED:", e.detail.tagify.getCleanValue())
+        let authorized = e.detail.tagify.getCleanValue()
+        let authorizedIDs = authorized.map(({value}) => value )
+
+        axios
+            .put( `/box/${id}/authorize`, {authorized: authorizedIDs})
+            .then((resp) => {
+                setError("");
+                console.log("Uspesno posodobljen array");
+            })
+            .catch((err) => {
+                setError(err.response.data.message);
+            });
+
+    }, [])
     return (
             <Tags
+                tagifyRef={tagifyRef1}
+                onChange={updateAuthorizedUsers}
                 settings={{
                     tagTextProp: 'name',
                     dropdown: {
@@ -48,7 +70,8 @@ const TagifyWithTemplates = (props) => {
                         dropdownItem: suggestionItemTemplate
 
                     },
-                    whitelist: props.users.map(({ _id,name,surname,email}) => ({value: _id, name:name,surname:surname,email:email}))
+                    whitelist: props.users.map(({ _id,name,surname,email}) => ({value: _id, name:name,surname:surname,email:email})),
+                    enforceWhitelist: true
                 }}
                 defaultValue={props.authorizedUsers.map(({ _id,name}) => ({value: _id, name:name}))}
                 autoFocus={true}

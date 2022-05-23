@@ -24,6 +24,8 @@ import { UserContext } from "../userContext";
 import axios from "../axios";
 import {useParams} from "react-router-dom";
 import TagifyWithTemplates from "./TagifyWithTemplates";
+import MapBox from "./MapBox";
+import Container from "@mui/material/Container";
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -95,6 +97,10 @@ function BoxViewSingle() {
     return (
         <StyledTableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <colgroup>
+                    <col width="20%"/>
+                    <col width="80%"/>
+                </colgroup>
                 <TableHead>
                     <StyledTableRow>
                         <StyledTableCell align="left">Mailbox </StyledTableCell>
@@ -150,18 +156,13 @@ function BoxViewSingle() {
                     >
                         <TableCell component="th" scope="row">
                             <Typography fontWeight="bold">
-                               Location
+                                Dimensions
                             </Typography>
                         </TableCell>
                         <TableCell component="th" scope="row">
-                            <IconButton aria-label="location"  sx={{
-                                "&.MuiButtonBase-root:hover": {
-                                    bgcolor: "transparent"
-                                }
-                            }}>
-                                <LocationOnIcon/>
-                            </IconButton>
-                            {box.location ?  box.location[0]:""} {box.location ? box.location[1]:""}
+                            <Typography sx={{m:1}}>
+                                {box.dimension} cm
+                            </Typography>
                         </TableCell>
                     </TableRow>
                     <TableRow
@@ -192,17 +193,28 @@ function BoxViewSingle() {
                     >
                         <TableCell component="th" scope="row">
                             <Typography fontWeight="bold">
-                                Dimensions
+                                Location
                             </Typography>
                         </TableCell>
                         <TableCell component="th" scope="row">
-                            <Typography sx={{m:1}}>
-                                {box.dimension} cm
-                            </Typography>
+                            <IconButton aria-label="location"  sx={{
+                                "&.MuiButtonBase-root:hover": {
+                                    bgcolor: "transparent"
+                                }
+                            }}>
+                                <LocationOnIcon/>
+                            </IconButton>
+                            {box.location ?  box.location[0]:""} {box.location ? box.location[1]:""}
                         </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <Container sx={{display: 'flex' , m:2}}>
+                            {box.location ? <MapBox coords={{lat: box.location[0], lng: box.location[1]}}/> : ""}
+                        </Container>
                     </TableRow>
                 </TableBody>
             </Table>
+
         </StyledTableContainer>
     );
 }
