@@ -75,7 +75,12 @@ module.exports = {
    * userController.update()
    */
   update: function (req, res) {
+
     var id = req.params.id;
+
+    if(id != req.user.id && !req.user.admin){
+      return res.sendStatus(403);
+    }
 
     UserModel.findOne({ _id: id }, function (err, user) {
       if (err) {
@@ -116,6 +121,10 @@ module.exports = {
    */
   remove: function (req, res) {
     var id = req.params.id;
+
+    if(id != req.user.id && !req.user.admin){
+      return res.sendStatus(403);
+    }
 
     UserModel.findByIdAndRemove(id, function (err, user) {
       if (err) {
