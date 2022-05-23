@@ -11,7 +11,14 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import InventoryIcon from "@mui/icons-material/Inventory";
-import {IconButton, Tooltip, Grid, Button, TextField} from "@mui/material";
+import {
+  IconButton,
+  Tooltip,
+  Grid,
+  Button,
+  TextField,
+  CardActionArea,
+} from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
 import Modal from "@mui/material/Modal";
@@ -32,6 +39,8 @@ function Profile() {
   const userContext = useContext(UserContext);
   const [open, setOpen] = React.useState(false);
   const [error, setError] = useState("");
+  const [file, setFile] = useState("");
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -43,6 +52,7 @@ function Profile() {
     surname: "",
     phone: "",
     address: "",
+    imgPath: "",
   });
 
   const [formData, setFormData] = useState({
@@ -51,7 +61,6 @@ function Profile() {
     phone: "",
     address: "",
   });
-
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -72,15 +81,33 @@ function Profile() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.put('/users/'+userContext.user.id, formData).then((resp) => {
+    axios
+      .put("/users/" + userContext.user.id, formData)
+      .then((resp) => {
         setError("");
-        console.log("Uspesno posodobljeno");
+        console.log("Uspesno posodobljen profil");
         setOpen(false);
         setData(resp.data);
-    }).catch((err) => {
+      })
+      .catch((err) => {
         setError(err.response.data.message);
-    });
-};
+      });
+      
+    if (file !== "") {
+      const imageForm = new FormData();
+      imageForm.append("image", file);
+      axios
+        .put("/users/profilephoto/" + userContext.user.id, imageForm)
+        .then((resp) => {
+          setError("");
+          console.log("Uspesno posodobljeno");
+          setData(resp.data);
+        })
+        .catch((err) => {
+          setError(err.response.data.message);
+        });
+    }
+  };
 
   return (
     <>
@@ -98,7 +125,7 @@ function Profile() {
               component="img"
               alt="profile picture"
               height="140"
-              image="https://cdn.pixabay.com/photo/2020/01/09/01/00/eyes-4751572_960_720.png"
+              image={"http://localhost:81/" + data.imgPath}
             />
             <CardContent>
               <Typography gutterBottom variant="h4" component="div">
@@ -140,7 +167,7 @@ function Profile() {
       >
         <Box sx={{ ...style, width: 400 }}>
           <h2 id="parent-modal-title">Edit your profile</h2>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} mt={2}>
             <TextField
               autoFocus
               required
@@ -153,7 +180,7 @@ function Profile() {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} sm={6} mt={1}>
+          <Grid item xs={12} sm={6} mt={2}>
             <TextField
               required
               fullWidth
@@ -165,7 +192,7 @@ function Profile() {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} sm={6} mt={1}>
+          <Grid item xs={12} sm={6} mt={2}>
             <TextField
               fullWidth
               id="phone"
@@ -177,7 +204,7 @@ function Profile() {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} mt={1}>
+          <Grid item xs={12} sm={6} mt={2} mb={1}>
             <TextField
               fullWidth
               id="address"
@@ -188,7 +215,25 @@ function Profile() {
               onChange={handleChange}
             />
           </Grid>
-          <Button onClick={handleSubmit}>Confirm</Button>
+          <form className="form-group" name="image">
+            <label>Change profile image</label>
+            <input
+              type="file"
+              id="file"
+              name="image "
+              onChange={(e) => {
+                setFile(e.target.files[0]);
+              }}
+            />
+          </form>
+          <Button
+            type="submit"
+            name="submit"
+            sx={{ marginRight: 2, marginTop: 2 }}
+            onClick={handleSubmit}
+          >
+            Confirm
+          </Button>
         </Box>
       </Modal>
     </>

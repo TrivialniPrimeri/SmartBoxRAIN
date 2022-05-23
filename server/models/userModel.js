@@ -9,6 +9,7 @@ var userSchema = new Schema(
     address: String,
     email: String,
     password: String,
+    imgPath: String,
     isAdmin: {
       type: Boolean,
       default: false,

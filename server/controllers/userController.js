@@ -91,13 +91,13 @@ module.exports = {
           message: "No such user",
         });
       }
-      console.log(req.body);
       user.name = req.body.name ? req.body.name : user.name;
       user.surname = req.body.surname ? req.body.surname : user.surname;
       user.phone = req.body.phone ? req.body.phone : user.phone;
       user.address = req.body.address ? req.body.address : user.address;
       user.email = req.body.email ? req.body.email : user.email;
       user.password = req.body.password ? req.body.password : user.password;
+      user.imgPath = req.file ? "/images/"+req.file.filename : user.imgPath;
 
       user.save(function (err, user) {
         if (err) {
