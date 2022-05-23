@@ -10,7 +10,7 @@ function suggestionItemTemplate(tagData) {
             class='tagify__dropdown__item d-flex align-items-center ${tagData.class ? tagData.class : ""}'
             tabindex="0"
             role="option">
-            <div class="d-flex flex-column">
+            <div class="d-flex flex-column text-dark">
                 <strong>${tagData.name} ${tagData.surname}</strong>
                 <span>${tagData.email}</span>
             </div>

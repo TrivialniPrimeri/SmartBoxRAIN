@@ -139,7 +139,7 @@ function BoxViewSingle() {
                             <HtmlTooltip
                                 title={
                                     <>
-                                        <Typography  color="inherit" sx={{mb:1}}>Information</Typography>
+                                        <Typography  color="inherit" sx={{mb:1}}>Details:</Typography>
                                              <p> {box.owner?.email}</p>
                                              <p> {box.owner?.phone}</p>
                                              <p> {box.owner?._id}</p>
