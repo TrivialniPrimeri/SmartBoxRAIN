@@ -73,16 +73,18 @@ function BoxViewSingle() {
             .then((resp) => {
                 console.log(resp.data);
                 setBox(resp.data);
+
+                axios
+                .get("/users")
+                .then((resp) => {
+                    console.log(resp.data);
+                    setUsers(resp.data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
             })
-            .catch((err) => {
-                console.log(err);
-            });
-        axios
-            .get("/users")
-            .then((resp) => {
-                console.log(resp.data);
-                setUsers(resp.data);
-            })
+            
             .catch((err) => {
                 console.log(err);
             });

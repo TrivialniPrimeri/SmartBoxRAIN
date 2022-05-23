@@ -3,7 +3,7 @@ var UserController = require("../controllers/userController.js");
 const jwt = require("jsonwebtoken");
 
 function generateAccToken(user){
-	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15s" }); //30mins cca
+	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30s" }); //30mins cca
 }
 
 module.exports = {
@@ -18,7 +18,7 @@ module.exports = {
 				const refreshToken = jwt.sign(userObj, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "200d" });
 				res
 				.cookie('refreshToken', refreshToken, {maxAge: 17_280_000_000, httpOnly: true, path: '/auth/refresh' })
-				.cookie('accessToken', accessToken, {maxAge: 15_000, httpOnly: true, path: '/' })
+				.cookie('accessToken', accessToken, {maxAge: 25_000, httpOnly: true, path: '/' })
 				.json({success: true, message: "Successfully logged in", accessToken: accessToken});
 			}
 		 });
@@ -36,7 +36,7 @@ module.exports = {
 			if (err) return res.sendStatus(403);
 			const accessToken = generateAccToken({email: user.email, id: user.id, isAdmin: user.isAdmin});
 			res
-			.cookie('accessToken', accessToken, {maxAge: 15_000, httpOnly: true, path: '/' })
+			.cookie('accessToken', accessToken, {maxAge: 25_000, httpOnly: true, path: '/' })
 			.json({accessToken: accessToken});
 		});
 
