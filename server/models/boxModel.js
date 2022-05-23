@@ -8,6 +8,7 @@ var boxSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "user",
     },
+    nickname: String,
     authorizedUsers: [
       {
         type: Schema.Types.ObjectId,

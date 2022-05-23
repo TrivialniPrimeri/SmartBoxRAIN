@@ -49,7 +49,6 @@ module.exports = {
    * userController.create()
    */
   create: function (req, res) {
-    console.log(req.body);
     var user = new UserModel({
       name: req.body.firstName,
       surname: req.body.lastName,

@@ -55,11 +55,12 @@ module.exports = {
     create: function (req, res) {
         var box = new BoxModel({
             boxId : req.body.boxId,
-			owner : req.body.owner,
+			owner : req.user.id,
             authorized : req.body.authorized,
 			location : req.body.location,
 			active : req.body.active,
-			dimension : req.body.dimension
+			dimension : req.body.dimension,
+            nickname: req.body.nickname,
         });
 
         box.save(function (err, box) {

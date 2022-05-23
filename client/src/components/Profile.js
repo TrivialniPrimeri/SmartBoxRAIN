@@ -125,7 +125,7 @@ function Profile() {
               component="img"
               alt="profile picture"
               height="140"
-              image={"http://localhost:81/" + data.imgPath}
+              image={data.imgPath ? "http://localhost:81/" + data.imgPath : ""}
             />
             <CardContent>
               <Typography gutterBottom variant="h4" component="div">

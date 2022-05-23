@@ -34,7 +34,7 @@ module.exports = {
 
 		jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => { //no blacklist so far
 			if (err) return res.sendStatus(403);
-			const accessToken = generateAccToken({email: user.email, id: user._id, isAdmin: user.isAdmin});
+			const accessToken = generateAccToken({email: user.email, id: user.id, isAdmin: user.isAdmin});
 			res
 			.cookie('accessToken', accessToken, {maxAge: 15_000, httpOnly: true, path: '/' })
 			.json({accessToken: accessToken});

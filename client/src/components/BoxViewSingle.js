@@ -164,7 +164,7 @@ function BoxViewSingle() {
                         </TableCell>
                         <TableCell component="th" scope="row">
                             <Typography sx={{m:1}}>
-                                {box.dimension} cm
+                                {box.dimension ? box.dimension + "cm" : "/"} 
                             </Typography>
                         </TableCell>
                     </TableRow>

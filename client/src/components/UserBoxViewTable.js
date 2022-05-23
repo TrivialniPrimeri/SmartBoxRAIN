@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {Badge, IconButton, makeStyles, tableCellClasses, Tooltip} from "@mui/material";
+import {Badge, Fab, IconButton, makeStyles, tableCellClasses, Tooltip} from "@mui/material";
 import Avatar from '@mui/material/Avatar';
 import Grid from "@mui/material/Grid";
 import InventoryIcon from '@mui/icons-material/Inventory';
@@ -19,6 +19,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import {useEffect, useState} from "react";
 import axios from "../axios";
 import {Link} from "react-router-dom";
+import AddIcon from '@mui/icons-material/Add';
+import AddBoxModal from './AddBoxModal';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -50,18 +52,18 @@ const StyledTableContainer= styled(TableContainer)(({ theme }) => ({
 
 function UserBoxViewTable() {
     const [boxes, setBoxes] = useState([]);
+    const [open, setOpen] = useState(false);
 
     useEffect(function () {
         axios
             .get("/box/")
             .then((resp) => {
-                console.log(resp.data);
                 setBoxes(resp.data);
             })
             .catch((err) => {
                 console.log(err);
             });
-    }, []);
+    }, [open]);
 
     return (
         <StyledTableContainer component={Paper}>
@@ -88,7 +90,7 @@ function UserBoxViewTable() {
                                     </Grid>
                                     <Grid item lg={7}>
                                         <Typography>
-                                            {box._id}
+                                            {`${box.nickname} (${box.boxId})`}
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -114,6 +116,10 @@ function UserBoxViewTable() {
                     ))}
                 </TableBody>
             </Table>
+            <Fab color="primary" style={{position: 'absolute', bottom: 0, right: 0, margin: '1%'}} onClick={() => {setOpen(true)}}>
+				<AddIcon htmlColor='white'/>
+			</Fab>
+            <AddBoxModal open={open} setOpen={setOpen}/>
         </StyledTableContainer>
     );
 }
