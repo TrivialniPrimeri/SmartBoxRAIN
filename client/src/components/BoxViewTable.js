@@ -16,7 +16,10 @@ import ViewIcon from '@mui/icons-material/FindInPage';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import Typography from "@mui/material/Typography";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
+import {useContext, useEffect, useState} from "react";
+import {UserContext} from "../userContext";
+import axios from "../axios";
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -58,7 +61,20 @@ const rows = [
 ];
 
 
-function BasicTable() {    
+function BoxViewTable() {
+    const [boxes, setBoxes] = useState([]);
+
+    useEffect(function () {
+        axios
+            .get("/box/")
+            .then((resp) => {
+                console.log(resp.data);
+                setBoxes(resp.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
 
     return (
         <StyledTableContainer component={Paper}>
@@ -73,15 +89,15 @@ function BasicTable() {
                     </StyledTableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
+                    {boxes.map((box) => (
                         <TableRow
-                            key={row.name}
+                            key={box._id}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell component="th" scope="row">
                                 <Grid container>
                                     <Grid item lg={1}>
-                                        <InventoryIcon alt={row.name}/>
+                                        <InventoryIcon/>
                                     </Grid>
                                     <Grid item lg={1}>
                                        <Typography fontWeight="bold">
@@ -90,7 +106,7 @@ function BasicTable() {
                                     </Grid>
                                     <Grid item lg={10}>
                                         <Typography>
-                                        {row.name}
+                                        {box._id}
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -100,17 +116,18 @@ function BasicTable() {
                                 <IconButton aria-label="location">
                                     <LocationOnIcon/>
                                 </IconButton>
-                                Cesta proleterskih brigad 12
+                                {box.location[0]} {box.location[1]}
                             </StyledTableCell>
                             <StyledTableCell align="left">
                                 <Tooltip title="View">
-                                <IconButton aria-label="view">
-                                <ViewIcon/>
-                            </IconButton>
+                                    <Link to={{
+                                        pathname: `/box/${box._id}`,
+                                    }} >
+                                        <IconButton aria-label="view">
+                                            <ViewIcon/>
+                                        </IconButton>
+                                    </Link>
                                 </Tooltip>
-                                <Link to={{
-                                    pathname: `/box/6289497e828241606f611307`,
-                                }} >ZAKA</Link>
                             </StyledTableCell>
                             <StyledTableCell align="left">
                                 <Tooltip title="Edit">
@@ -119,7 +136,6 @@ function BasicTable() {
                             </IconButton>
                                 </Tooltip>
                             </StyledTableCell>
-
                             <StyledTableCell align="left">
                                 <Tooltip title="Delete">
                                 <IconButton aria-label="delete">
@@ -134,4 +150,4 @@ function BasicTable() {
         </StyledTableContainer>
     );
 }
-export default BasicTable;
+export default BoxViewTable;

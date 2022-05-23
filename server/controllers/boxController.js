@@ -12,7 +12,7 @@ module.exports = {
      * boxController.list()
      */
     list: function (req, res) {
-        BoxModel.find(function (err, boxs) {
+        BoxModel.find(function (err, boxes) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting box.',
@@ -20,7 +20,7 @@ module.exports = {
                 });
             }
 
-            return res.json(boxs);
+            return res.json(boxes);
         });
     },
 
@@ -30,7 +30,7 @@ module.exports = {
     show: function (req, res) {
         var id = req.params.id;
 
-        BoxModel.findOne({_id: id}).populate('owner').exec( function (err, box) {
+        BoxModel.findOne({_id: id}).populate('owner').populate('location').populate('authorizedUsers').exec( function (err, box) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting box.',

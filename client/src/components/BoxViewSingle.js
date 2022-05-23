@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -23,7 +23,7 @@ import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { UserContext } from "../userContext";
 import axios from "../axios";
 import {useParams} from "react-router-dom";
-
+import TagifyWithTemplates from "./TagifyWithTemplates";
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -63,25 +63,14 @@ const HtmlTooltip = styled(({ className, ...props }) => (
         border: '1px solid #fffff1',
     },
 }));
-function createData(name) {
-    return { name };
-}
-
-const rows = [
-    createData('338f4cba-655f-43d2-b9ff-eeceb93f0f88'),
-    createData('0dcf7721-6369-41c3-8b0c-f972c371bb0b\n'),
-    createData('000000-841c-0000-b44d-0000000\n'),
-
-];
-
 
 function BoxViewSingle() {
     const userContext = useContext(UserContext);
     const [box, setBox] = useState({});
+    const [users, setUsers] = useState(null);
     const { id } = useParams()
 
     useEffect(function () {
-        console.log(id);
         axios
             .get("/box/" + id)
             .then((resp) => {
@@ -91,7 +80,17 @@ function BoxViewSingle() {
             .catch((err) => {
                 console.log(err);
             });
+        axios
+            .get("/users")
+            .then((resp) => {
+                console.log(resp.data);
+                setUsers(resp.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }, []);
+
 
     return (
         <StyledTableContainer component={Paper}>
@@ -162,7 +161,7 @@ function BoxViewSingle() {
                             }}>
                                 <LocationOnIcon/>
                             </IconButton>
-                            Ulica proleterskih brigad 12
+                            {box.location ?  box.location[0]:""} {box.location ? box.location[1]:""}
                         </TableCell>
                     </TableRow>
                     <TableRow
@@ -174,12 +173,18 @@ function BoxViewSingle() {
                             </Typography>
                         </TableCell>
                         <TableCell component="tr" scope="row">
-                            <IconButton aria-label="location"  sx={{
-                                "&.MuiButtonBase-root:hover": {
-                                    bgcolor: "transparent"
-                                }
-                            }}> <AuthorizedIcon/> </IconButton>
-                            Andrej Martin Tona
+                            <Grid container maxWidth="80%">
+                                <Grid item>
+                                    <IconButton aria-label="location"  sx={{
+                                        "&.MuiButtonBase-root:hover": {
+                                            bgcolor: "transparent"
+                                        }
+                                    }}> <AuthorizedIcon/> </IconButton>
+                                </Grid>
+                                <Grid item lg={3}>
+                                    {users && box.authorizedUsers && <TagifyWithTemplates authorizedUsers={box.authorizedUsers} users={users}  />}
+                                </Grid>
+                            </Grid>
                         </TableCell>
                     </TableRow>
                     <TableRow
