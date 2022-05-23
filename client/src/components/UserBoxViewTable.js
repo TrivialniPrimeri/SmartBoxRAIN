@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {Badge, IconButton, makeStyles, tableCellClasses} from "@mui/material";
+import {Badge, IconButton, makeStyles, tableCellClasses, Tooltip} from "@mui/material";
 import Avatar from '@mui/material/Avatar';
 import Grid from "@mui/material/Grid";
 import InventoryIcon from '@mui/icons-material/Inventory';
@@ -16,6 +16,9 @@ import ViewIcon from '@mui/icons-material/FindInPage';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import Typography from "@mui/material/Typography";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import {useEffect, useState} from "react";
+import axios from "../axios";
+import {Link} from "react-router-dom";
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -44,19 +47,21 @@ const StyledTableContainer= styled(TableContainer)(({ theme }) => ({
     }
 }));
 
-function createData(name) {
-    return { name };
-}
-
-const rows = [
-    createData('338f4cba-655f-43d2-b9ff-eeceb93f0f88'),
-    createData('0dcf7721-6369-41c3-8b0c-f972c371bb0b\n'),
-    createData('000000-841c-0000-b44d-0000000\n'),
-
-];
-
 
 function UserBoxViewTable() {
+    const [boxes, setBoxes] = useState([]);
+
+    useEffect(function () {
+        axios
+            .get("/box/")
+            .then((resp) => {
+                console.log(resp.data);
+                setBoxes(resp.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
 
     return (
         <StyledTableContainer component={Paper}>
@@ -66,13 +71,12 @@ function UserBoxViewTable() {
                         <StyledTableCell align="left">My Mailboxes</StyledTableCell>
                         <StyledTableCell />
                         <StyledTableCell />
-                        <StyledTableCell />
                     </StyledTableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
+                    {boxes.map((box) => (
                         <TableRow
-                            key={row.name}
+                            key={box._id}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell component="th" scope="row">
@@ -84,7 +88,7 @@ function UserBoxViewTable() {
                                     </Grid>
                                     <Grid item lg={7}>
                                         <Typography>
-                                            {row.name}
+                                            {box._id}
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -93,17 +97,18 @@ function UserBoxViewTable() {
                                 <IconButton aria-label="location">
                                     <LocationOnIcon/>
                                 </IconButton>
-                                Cesta proleterskih brigad 12
+                                {box.location[0]} {box.location[1]}
                             </StyledTableCell>
                             <StyledTableCell align="left">
-                                <IconButton aria-label="delete">
-                                    <ViewIcon/>
-                                </IconButton>
-                            </StyledTableCell>
-                            <StyledTableCell align="left">
-                                <IconButton aria-label="edit">
-                                    <EditIcon />
-                                </IconButton>
+                                <Tooltip title="View">
+                                    <Link to={{
+                                        pathname: `/box/${box._id}`,
+                                    }} >
+                                        <IconButton aria-label="view">
+                                            <ViewIcon/>
+                                        </IconButton>
+                                    </Link>
+                                </Tooltip>
                             </StyledTableCell>
                         </TableRow>
                     ))}

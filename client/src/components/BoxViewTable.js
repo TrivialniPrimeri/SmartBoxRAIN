@@ -48,19 +48,6 @@ const StyledTableContainer= styled(TableContainer)(({ theme }) => ({
     }
 }));
 
-function createData(name) {
-    return { name };
-}
-
-const rows = [
-    createData('338f4cba-655f-43d2-b9ff-eeceb93f0f88'),
-    createData('0dcf7721-6369-41c3-8b0c-f972c371bb0b\n'),
-    createData('c9cf8b50-841c-44a9-b44d-6b582185d77f\n'),
-    createData('7ccc97a0-748c-4a38-83ae-c12dba47bbfd\n'),
-    createData('ed8bcb5f-3982-4856-88c8-9aca9d996dd5'),
-];
-
-
 function BoxViewTable() {
     const [boxes, setBoxes] = useState([]);
 

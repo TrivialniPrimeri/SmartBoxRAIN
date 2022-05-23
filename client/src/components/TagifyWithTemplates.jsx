@@ -1,10 +1,9 @@
 import React, {useState, useEffect, useCallback, useRef, useMemo} from 'react'
-//import Tags from './tagify/react.tagify'
-//import Tags from "@yaireo/tagify/dist/react.tagify"
 import Tags from '@yaireo/tagify/dist/react.tagify'
 import "@yaireo/tagify/dist/tagify.css"
 import axios from "../axios";
 import {useParams} from "react-router-dom"; // Tagify CSS
+
 function suggestionItemTemplate(tagData) {
     return `
         <div ${this.getAttributes(tagData)}

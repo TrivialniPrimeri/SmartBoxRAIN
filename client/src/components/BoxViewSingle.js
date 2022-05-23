@@ -20,6 +20,7 @@ import {useParams} from "react-router-dom";
 import TagifyWithTemplates from "./TagifyWithTemplates";
 import MapBox from "./MapBox";
 import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -89,10 +90,18 @@ function BoxViewSingle() {
 
 
     return (
+        <Container>
+        <Box
+            sx={{
+                marginTop: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+            }}>
         <StyledTableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <colgroup>
-                    <col width="20%"/>
+                    <col width="25%"/>
                     <col width="80%"/>
                 </colgroup>
                 <TableHead>
@@ -168,7 +177,7 @@ function BoxViewSingle() {
                             </Typography>
                         </TableCell>
                         <TableCell component="tr" scope="row">
-                            <Grid container maxWidth="80%">
+                            <Grid container >
                                 <Grid item>
                                     <IconButton aria-label="location"  sx={{
                                         "&.MuiButtonBase-root:hover": {
@@ -176,7 +185,7 @@ function BoxViewSingle() {
                                         }
                                     }}> <AuthorizedIcon/> </IconButton>
                                 </Grid>
-                                <Grid item lg={3}>
+                                <Grid item lg>
                                     {users && box.authorizedUsers && <TagifyWithTemplates authorizedUsers={box.authorizedUsers} users={users}  />}
                                 </Grid>
                             </Grid>
@@ -210,6 +219,8 @@ function BoxViewSingle() {
             </Table>
 
         </StyledTableContainer>
+            </Box>
+        </Container>
     );
 }
 export default BoxViewSingle;

@@ -1,12 +1,16 @@
 import UserBoxViewTable from "./UserBoxViewTable";
+import BoxViewTable from "./BoxViewTable";
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import BoxViewTable from "./BoxViewTable";
-import BoxViewSingle from "./BoxViewSingle";
+import {useContext} from "react";
+import {UserContext} from "../userContext";
+import {useEffect} from "react";
+import axios from "../axios";
 
 function BoxViewPage(){
-
+    const userContext = useContext(UserContext);
+    console.log(userContext.user)
     return(
         <Container>
             <Box
@@ -16,7 +20,8 @@ function BoxViewPage(){
                     flexDirection: 'column',
                     alignItems: 'center',
                 }}>
-            <BoxViewTable/>
+                {userContext.user.admin ? <> <BoxViewTable/>  </>: <> <UserBoxViewTable/> </>}
+
             </Box>
         </Container>
     )
