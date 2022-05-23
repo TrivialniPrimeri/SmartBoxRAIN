@@ -22,7 +22,7 @@ export default function MapBox(props) {
    })
 
     return (
-		<MapContainer style={{ height: '300px', width: '300px' }} center={[props.coords.lat, props.coords.lng]} zoom={13} scrollWheelZoom={false}>
+		<MapContainer style={{ height: '20vh', width: '20vw' }} center={[props.coords.lat, props.coords.lng]} zoom={15} scrollWheelZoom={false}>
 			    <TileLayer
 				attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 				url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

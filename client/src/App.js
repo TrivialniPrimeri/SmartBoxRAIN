@@ -12,6 +12,7 @@ import Logout from "./components/Logout";
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import BoxViewSingle from "./components/BoxViewSingle";
+import UnlocksHistory from './components/UnlocksHistory';
 
 function App() {
 
@@ -54,6 +55,7 @@ function App() {
                 <Route path="/profile" exact element={<Profile/>}></Route>
                 <Route path="/logout" exact element={<Logout />}></Route>
                 <Route path="/box/:id" exact element={<BoxViewSingle />}></Route>
+                <Route path="/box/:id/history" exact element={<UnlocksHistory />}></Route>
               </Routes>
             </div>
           </ThemeProvider>

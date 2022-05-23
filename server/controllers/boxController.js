@@ -1,6 +1,7 @@
 var BoxModel = require('../models/boxModel.js');
 const axios = require('axios');
 const mongoose = require("mongoose");
+const unlockModel = require('../models/unlockModel.js');
 
 /**
  * boxController.js
@@ -179,4 +180,20 @@ module.exports = {
             return res.json({errorNumber: err.response.status})
         })
     },
+
+    allUnlocks: function (req, res) {
+        unlockModel.find({boxId: req.params.id}).populate("userId").exec(function (err, boxes) {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    message: 'Error when getting box.',
+                    error: err
+                });
+            }
+
+            return res.json(boxes);
+        });
+    },
+
+
 };

@@ -128,4 +128,19 @@ module.exports = {
       return res.status(204).json();
     });
   },
+
+  allUnlocks: function (req, res) {
+    unlockModel.find({userId: req.params.id}).populate("boxId").exec(function (err, boxes) {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                message: 'Error when getting box.',
+                error: err
+            });
+        }
+
+        return res.json(boxes);
+    });
+  },
+
 };

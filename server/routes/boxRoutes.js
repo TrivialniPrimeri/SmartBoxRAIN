@@ -16,5 +16,6 @@ router.put('/:id/authorize',boxController.updateAuthorizedUsers)
 
 router.delete('/:id', boxController.remove);
 
+router.get('/:id/unlocks', boxController.allUnlocks);
 
 module.exports = router;

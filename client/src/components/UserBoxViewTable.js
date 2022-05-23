@@ -21,6 +21,7 @@ import axios from "../axios";
 import {Link} from "react-router-dom";
 import AddIcon from '@mui/icons-material/Add';
 import AddBoxModal from './AddBoxModal';
+import HistoryIcon from '@mui/icons-material/History';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -108,6 +109,15 @@ function UserBoxViewTable() {
                                     }} >
                                         <IconButton aria-label="view">
                                             <ViewIcon/>
+                                        </IconButton>
+                                    </Link>
+                                </Tooltip>
+                                <Tooltip title="Unlock history">
+                                    <Link to={{
+                                        pathname: `/box/${box._id}/history`,
+                                    }} >
+                                        <IconButton aria-label="view">
+                                            <HistoryIcon/>
                                         </IconButton>
                                     </Link>
                                 </Tooltip>

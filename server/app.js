@@ -58,7 +58,7 @@ function checkAuth(req, res, next){
 app.use('/auth', authRouter);
 app.use('/users', checkAuth, usersRouter);
 app.use('/testAPI', checkAuth, testApiRouter);
-app.use('/box', checkAuth, boxesRouter);
+app.use('/box', boxesRouter);
 app.use('/unlocks', checkAuth, unlocksRouter);
 
 // catch 404 and forward to error handler

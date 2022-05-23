@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {Badge, IconButton, makeStyles, tableCellClasses} from "@mui/material";
+import {Badge, IconButton, ListItemText, makeStyles, tableCellClasses, List, ListItemButton} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -21,7 +21,6 @@ import TagifyWithTemplates from "./TagifyWithTemplates";
 import MapBox from "./MapBox";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -211,9 +210,22 @@ function BoxViewSingle() {
                         </TableCell>
                     </TableRow>
                     <TableRow>
-                        <Container sx={{display: 'flex' , m:2}}>
+                        <TableCell colSpan={1}> 
                             {box.location ? <MapBox coords={{lat: box.location[0], lng: box.location[1]}}/> : ""}
-                        </Container>
+                        </TableCell>
+                        <TableCell colSpan={1}>
+                            <Typography sx={{m:1}}>
+                                Recent unlocks
+                            </Typography>
+                            
+                            <List dense={true} sx={{ml:2}}>
+                                <ListItemText primary="Unlock 1" secondary="1 day ago" />
+                                <ListItemText primary="Unlock 2" secondary="2 days ago" />
+                                <ListItemText primary="Unlock 3" secondary="3 days ago" />
+                                <ListItemButton>View more</ListItemButton>
+                            </List>
+                            
+                        </TableCell>
                     </TableRow>
                 </TableBody>
             </Table>
