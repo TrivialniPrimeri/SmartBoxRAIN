@@ -136,21 +136,28 @@ function BoxViewSingle() {
                             </Typography>
                         </TableCell>
                         <TableCell component="th" scope="row">
+                        {userContext.user.admin ? (
                             <HtmlTooltip
-                                title={
-                                    <>
-                                        <Typography  color="inherit" sx={{mb:1}}>Details:</Typography>
-                                             <p> {box.owner?.email}</p>
-                                             <p> {box.owner?.phone}</p>
-                                             <p> {box.owner?._id}</p>
-                                    </>
-                                }
-                                placement="right"
-                            >
-                                <IconButton aria-label="owner" >
-                                    <OwnerIcon/>
-                                </IconButton>
-                            </HtmlTooltip>
+                            title={
+                                <>
+                                    <Typography  color="inherit" sx={{mb:1}}>Details:</Typography>
+                                         <p> {box.owner?.email}</p>
+                                         <p> {box.owner?.phone}</p>
+                                         <p> {box.owner?._id}</p>
+                                </>
+                            }
+                            placement="right"
+                        >
+                            <IconButton aria-label="owner" >
+                                <OwnerIcon/>
+                            </IconButton>
+                        </HtmlTooltip>
+                        ) : (
+                            <IconButton aria-label="owner" >
+                                <OwnerIcon/>
+                            </IconButton>
+                        )}
+
                             <span>{box.owner?.name}</span>
                             <span>&nbsp;</span>
                             <span>{box.owner?.surname}</span>
