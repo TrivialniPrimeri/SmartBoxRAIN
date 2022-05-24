@@ -16,7 +16,7 @@ module.exports = {
      */
     list: function (req, res) {
 
-        if(!req.user.isAdmin) return res.sendStatus(403);
+        if(!req.user?.isAdmin && req.user) return res.sendStatus(403);
 
         BoxModel.find().populate('owner').exec(function (err, boxes) {
             if (err) {
@@ -52,7 +52,6 @@ module.exports = {
 
             const latestUnlock = await unlockModel.find({boxId: box._id}).populate("userId").sort({createdAt: -1}).limit(1);
             box.latestUnlock = latestUnlock[0];
-            console.log(box.latestUnlock);
 
             return res.json(box);
         });
@@ -195,11 +194,10 @@ module.exports = {
         boxModel.findById(req.params.id).exec(function (err, box) {
             if(err) return res.sendStatus(500);
             
-            if(req.user.id != box.owner && !req.user.isAdmin) return res.sendStatus(403);
+            if(req.user?.id != box.owner && !req.user?.isAdmin && req.user) return res.sendStatus(403);
 
             unlockModel.find({boxId: req.params.id}).populate("userId").exec(function (err, unlocks) {
                 if (err) {
-                    console.log(err);
                     return res.status(500).json({
                         message: 'Error when getting unlocks.',
                         error: err

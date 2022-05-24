@@ -1,13 +1,8 @@
 import UserBoxViewTable from "./UserBoxViewTable";
-import BoxViewTable from "./BoxViewTable";
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import {useContext} from "react";
 import {UserContext} from "../userContext";
-import {useEffect} from "react";
-import axios from "../axios";
-import UserViewTable from "./UserViewTable";
 import AdminDashboard from "./AdminDashboard";
 
 function BoxViewPage(props){

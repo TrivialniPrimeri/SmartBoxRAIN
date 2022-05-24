@@ -14,7 +14,6 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error'))
 
 var usersRouter = require("./routes/userRoutes");
-var testApiRouter = require("./routes/testApi");
 var boxesRouter = require("./routes/boxRoutes");
 var unlocksRouter = require("./routes/unlockRoutes");
 var authRouter = require("./routes/authRoutes");
@@ -57,8 +56,7 @@ function checkAuth(req, res, next){
 }
 app.use('/auth', authRouter);
 app.use('/users', checkAuth, usersRouter);
-app.use('/testAPI', checkAuth, testApiRouter);
-app.use('/box', checkAuth, boxesRouter);
+app.use('/box', boxesRouter);
 app.use('/unlocks', checkAuth, unlocksRouter);
 
 // catch 404 and forward to error handler
@@ -74,7 +72,6 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  console.log(err);
   res.json(err);
 });
 

@@ -1,16 +1,14 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import React from "react";
-import { useState } from 'react';
-import Header from "./components/Header";
+import { React, useState } from 'react';
 import { UserContext } from "./userContext";
-//import Photos from './components/photos';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import Header from "./components/Header";
 import SignIn from "./components/Login";
 import SignUp from "./components/Register";
 import Profile from "./components/Profile";
 import BoxViewPage from './components/BoxViewPage';
 import Logout from "./components/Logout";
-import CssBaseline from '@mui/material/CssBaseline';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import BoxViewSingle from "./components/BoxViewSingle";
 
 function App() {

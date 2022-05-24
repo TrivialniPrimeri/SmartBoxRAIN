@@ -1,6 +1,5 @@
 import BoxViewTable from "./BoxViewTable";
 import UserViewTable from "./UserViewTable";
-import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
 function AdminDashboard() {

@@ -1,11 +1,9 @@
-import Button from "./Button";
 import { UserContext } from "../userContext";
-import { Link, NavLink } from "react-router-dom";
-import { AppBar, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Stack } from "@mui/material";
+import {  NavLink } from "react-router-dom";
+import { AppBar, appBarClasses, Drawer, drawerClasses, IconButton, List, ListItemButton, ListItemText, Stack, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import Typography from '@mui/material/Typography';
 import { useState, useContext } from "react";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
@@ -28,9 +26,31 @@ function Header(props){
 
     const userCxt = useContext(UserContext);
 
+    const StyledAppBar = styled(AppBar)(({ theme }) => ({
+        [`&.${appBarClasses.head}`]: {
+            backgroundColor: theme.palette.primary.dark,
+            color: theme.palette.getContrastText(theme.palette.primary.dark),
+            fontWeight: 'bold',
+        }
+    }));
+
+    const StyledDrawer = styled(Drawer)(({ theme }) => ({
+        [`&.${drawerClasses.head}`]: {
+            backgroundColor: theme.palette.primary.dark,
+            color: theme.palette.getContrastText(theme.palette.primary.dark),
+            fontWeight: 'bold',
+        },
+        [`.active`]: {
+            color: theme.palette.primary.dark,
+        },
+        [`.css-1io6o2-MuiButtonBase-root-MuiListItemButton-root:hover`]: {
+            color: theme.palette.primary.dark,
+        },
+    }));
+
     return(
         <header>
-            <AppBar position="sticky" sx={{p: 2}} >
+            <StyledAppBar position="sticky" sx={{p: 2}} >
                 <Stack direction="row" alignItems="center" gap="1">
                     <IconButton sx={{mr: 2}} color="inherit" onClick={() => setDrawerState(true)}>
                         <MenuIcon fontSize="large"></MenuIcon>
@@ -38,8 +58,8 @@ function Header(props){
                     <Typography variant="h4" sx={{ flexGrow: 1 }}>Spletni portal</Typography>
                     {(theme === "light") ? <DarkModeIcon sx={{cursor: 'pointer'}} onClick={() => themeUpdate("dark")}/> : <LightModeIcon sx={{cursor: 'pointer'}} onClick={() => themeUpdate("light")}/>}
                 </Stack>
-            </AppBar>
-            <Drawer open={drawerState} onClose={() => setDrawerState(false)} className="navDrawer" >
+            </StyledAppBar>
+            <StyledDrawer open={drawerState} onClose={() => setDrawerState(false)} className="navDrawer" >
                 <List>
                     <ListItemButton component={NavLink} to="/">
                         <InventoryIcon sx={{mr: 1}}/>
@@ -69,7 +89,7 @@ function Header(props){
                         </ListItemButton>
                     </>}
                 </List>
-            </Drawer>
+            </StyledDrawer>
         </header>
 
     )

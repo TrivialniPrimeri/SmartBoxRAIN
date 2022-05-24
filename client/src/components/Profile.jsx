@@ -1,27 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../userContext";
-import { Link, Navigate } from "react-router-dom";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
+import { Link } from "react-router-dom";
 import axios from "../axios";
-import * as React from "react";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
 import InventoryIcon from "@mui/icons-material/Inventory";
-import {
-  IconButton,
-  Tooltip,
-  Grid,
-  Button,
-  TextField,
-  CardActionArea,
-} from "@mui/material";
-
+import { IconButton, Tooltip, Grid, Button, TextField, CardMedia, CardActions, CardContent, Typography, Card, Modal, Container, Box } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import Modal from "@mui/material/Modal";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -37,7 +21,7 @@ const style = {
 };
 function Profile() {
   const userContext = useContext(UserContext);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
   const [file, setFile] = useState("");
 
@@ -88,25 +72,28 @@ function Profile() {
         console.log("Uspesno posodobljen profil");
         setOpen(false);
         setData(resp.data);
+
+        if (file !== "") {
+          const imageForm = new FormData();
+          imageForm.append("image", file);
+          axios
+            .put("/users/profilephoto/" + userContext.user.id, imageForm)
+            .then((resp) => {
+              setError("");
+              console.log("Uspesno posodobljeno");
+              setData(resp.data);
+            })
+            .catch((err) => {
+              setError(err.response.data.message);
+            });
+        }
+
       })
       .catch((err) => {
         setError(err.response.data.message);
       });
-      
-    if (file !== "") {
-      const imageForm = new FormData();
-      imageForm.append("image", file);
-      axios
-        .put("/users/profilephoto/" + userContext.user.id, imageForm)
-        .then((resp) => {
-          setError("");
-          console.log("Uspesno posodobljeno");
-          setData(resp.data);
-        })
-        .catch((err) => {
-          setError(err.response.data.message);
-        });
-    }
+
+
   };
 
   return (
@@ -121,12 +108,7 @@ function Profile() {
           }}
         >
           <Card>
-            <CardMedia
-              component="img"
-              alt="profile picture"
-              height="140"
-              image={data.imgPath ? "http://localhost:81/" + data.imgPath : ""}
-            />
+            <CardMedia component="img" alt="profile picture" height="140" image={data.imgPath ? "http://localhost:81/" + data.imgPath : "https://st.depositphotos.com/1779253/5140/v/600/depositphotos_51405259-stock-illustration-male-avatar-profile-picture-use.jpg"} />
             <CardContent>
               <Typography gutterBottom variant="h4" component="div">
                 {data.name}'s profile
@@ -159,61 +141,21 @@ function Profile() {
           </Card>
         </Box>
       </Container>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="parent-modal-title"
-        aria-describedby="parent-modal-description"
-      >
+      <Modal open={open} onClose={handleClose} aria-labelledby="parent-modal-title" aria-describedby="parent-modal-description">
         <Box sx={{ ...style, width: 400 }}>
           <h2 id="parent-modal-title">Edit your profile</h2>
           <Grid item xs={12} sm={6} mt={2}>
-            <TextField
-              autoFocus
-              required
-              fullWidth
-              id="firstName"
-              label="First Name"
-              name="name"
-              value={formData.name}
-              autoComplete="given-name"
-              onChange={handleChange}
-            />
+            <TextField autoFocus required fullWidth id="firstName" label="First Name" name="name" value={formData.name} autoComplete="given-name" onChange={handleChange} />
           </Grid>
           <Grid item xs={12} sm={6} mt={2}>
-            <TextField
-              required
-              fullWidth
-              id="lastName"
-              label="Last Name"
-              name="surname"
-              value={formData.surname}
-              autoComplete="family-name"
-              onChange={handleChange}
-            />
+            <TextField required fullWidth id="lastName" label="Last Name" name="surname" value={formData.surname} autoComplete="family-name" onChange={handleChange} />
           </Grid>
           <Grid item xs={12} sm={6} mt={2}>
-            <TextField
-              fullWidth
-              id="phone"
-              label="Phone"
-              name="phone"
-              value={formData.phone}
-              autoComplete="phone"
-              onChange={handleChange}
-            />
+            <TextField fullWidth id="phone" label="Phone" name="phone" value={formData.phone} autoComplete="phone" onChange={handleChange} />
           </Grid>
 
           <Grid item xs={12} sm={6} mt={2} mb={1}>
-            <TextField
-              fullWidth
-              id="address"
-              label="Address"
-              name="address"
-              value={formData.address}
-              autoComplete="address"
-              onChange={handleChange}
-            />
+            <TextField fullWidth id="address" label="Address" name="address" value={formData.address} autoComplete="address" onChange={handleChange} />
           </Grid>
           <form className="form-group" name="image">
             <label>Change profile image</label>
@@ -226,12 +168,7 @@ function Profile() {
               }}
             />
           </form>
-          <Button
-            type="submit"
-            name="submit"
-            sx={{ marginRight: 2, marginTop: 2 }}
-            onClick={handleSubmit}
-          >
+          <Button type="submit" name="submit" sx={{ marginRight: 2, marginTop: 2 }} onClick={handleSubmit}>
             Confirm
           </Button>
         </Box>

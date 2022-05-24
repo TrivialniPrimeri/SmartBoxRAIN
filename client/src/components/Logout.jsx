@@ -3,8 +3,7 @@ import { useContext, useEffect } from "react";
 import axios from "../axios";
 import { useNavigate } from 'react-router-dom';
 
-
-function Logout(props){
+function Logout(){
 
 	const navigator = useNavigate();
 
@@ -17,9 +16,7 @@ function Logout(props){
 		});
 	});
 
-    return(
-		<h1>Logout</h1>
-    )
+    return null;
 }
 
 export default Logout;

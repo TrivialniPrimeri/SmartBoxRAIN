@@ -34,6 +34,7 @@ var userSchema = new Schema(
     timestamps: true,
   }
 );
+
 userSchema.statics.authenticate = function (email, password, callback) {
   user.findOne({ email: email }).exec(function (err, user) {
     if (err) {
@@ -52,6 +53,7 @@ userSchema.statics.authenticate = function (email, password, callback) {
     });
   });
 };
+
 userSchema.pre("save", function (next) {
   var user = this;
   if (!user.isModified('password')) return next(); // prevents rehashing

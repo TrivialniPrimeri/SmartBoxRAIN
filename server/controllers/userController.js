@@ -1,8 +1,8 @@
-const { default: mongoose, mongo } = require("mongoose");
 const boxModel = require("../models/boxModel.js");
 const BoxModel = require("../models/boxModel.js");
 const unlockModel = require("../models/unlockModel.js");
 var UserModel = require("../models/userModel.js");
+const fs = require('fs')
 
 /**
  * userController.js
@@ -115,7 +115,6 @@ module.exports = {
 
     user.save(function (err, user) {
       if (err) {
-        console.log(err);
         return res.status(500).json({
           message: "Error when creating user",
           error: err,
@@ -149,6 +148,10 @@ module.exports = {
         return res.status(404).json({
           message: "No such user",
         });
+      }
+
+      if(req.file && user.imgPath != ""){
+        fs.unlinkSync(`public/${user.imgPath}`);
       }
 
       user.name = req.body.name ? req.body.name : user.name;
@@ -201,7 +204,6 @@ module.exports = {
 
     unlockModel.find({userId: req.params.id}).populate("boxId").exec(function (err, boxes) {
         if (err) {
-            console.log(err);
             return res.status(500).json({
                 message: 'Error when getting box.',
                 error: err

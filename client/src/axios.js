@@ -1,13 +1,9 @@
 import axios from 'axios';
-import { useContext } from 'react';
-import { UserContext } from './userContext';
-
 
 const instance = axios.create({
 	baseURL: 'http://localhost:81/',
 	withCredentials: true,
 });
-
 
 instance.interceptors.response.use(
 	req => {

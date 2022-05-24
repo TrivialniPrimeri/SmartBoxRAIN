@@ -1,24 +1,15 @@
 import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import {Badge, Fab, IconButton, makeStyles, tableCellClasses, Tooltip} from "@mui/material";
-import Grid from "@mui/material/Grid";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, Fab, IconButton, tableCellClasses, Tooltip } from '@mui/material';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import ViewIcon from '@mui/icons-material/Visibility';
 import AuthorizedIcon from '@mui/icons-material/GppGood';
 import Typography from "@mui/material/Typography";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import AddIcon from '@mui/icons-material/Add';
 import {useEffect, useState} from "react";
 import axios from "../axios";
 import {Link} from "react-router-dom";
-import AddIcon from '@mui/icons-material/Add';
 import AddBoxModal from './AddBoxModal';
-
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -176,9 +167,8 @@ function UserBoxViewTable() {
             </StyledTableContainer>
             }
 
-
             <Fab color="primary" style={{position: 'absolute', bottom: 0, right: 0, margin: '1%'}} onClick={() => {setOpen(true)}}>
-            <AddIcon htmlColor='white'/>
+            <AddIcon/>
             </Fab>
             <AddBoxModal open={open} setOpen={setOpen}/>
         </>

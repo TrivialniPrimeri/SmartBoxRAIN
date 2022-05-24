@@ -1,11 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from '../axios';
-import { Container, Fab, ImageList, ImageListItem, ImageListItemBar, Typography, Box, Button, Stepper, Step, StepLabel, StepContext, StepContent, Input, InputLabel, Grid } from '@mui/material';
-import { useNavigate, Link } from 'react-router-dom';
-import AddIcon from '@mui/icons-material/Add';
+import { Typography, Box, Button, Stepper, Step, StepLabel, Input, InputLabel, Grid } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import MapInput from './MapInput';
-
 
 const style = {
 	position: 'absolute',

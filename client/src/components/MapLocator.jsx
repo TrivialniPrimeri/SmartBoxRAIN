@@ -1,18 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import axios from '../axios';
-import { InputLabel } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { MapContainer, Marker, TileLayer, useMap, useMapEvent, useMapEvents } from 'react-leaflet'
+import { useState, useEffect } from 'react';
+import {Marker, useMap, useMapEvents } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css';
 import * as L from "leaflet";
-import RoomIcon from '@mui/icons-material/Room';
 
 export default function MapLocator(props) {
 

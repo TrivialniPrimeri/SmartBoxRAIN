@@ -1,7 +1,6 @@
 var UserModel = require("../models/userModel.js");
 var UserController = require("../controllers/userController.js");
 const jwt = require("jsonwebtoken");
-const { default: mongoose } = require("mongoose");
 
 function generateAccToken(user){
 	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30s" }); //30mins cca
