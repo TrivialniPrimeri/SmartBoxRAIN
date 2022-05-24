@@ -13,7 +13,7 @@ module.exports = {
      * boxController.list()
      */
     list: function (req, res) {
-        BoxModel.find(function (err, boxes) {
+        BoxModel.find().populate('owner').exec(function (err, boxes) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting box.',

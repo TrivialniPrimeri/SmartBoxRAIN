@@ -19,6 +19,9 @@ import {useContext, useEffect, useState} from "react";
 import axios from "../axios";
 import OwnerIcon from "@mui/icons-material/ContactPage";
 import {tooltipClasses} from "@mui/material/Tooltip";
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import GroupRemoveIcon from '@mui/icons-material/GroupRemove';
+import {pink, red} from "@mui/material/colors";
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -58,15 +61,15 @@ const HtmlTooltip = styled(({ className, ...props }) => (
 }));
 
 
-function BoxViewTable() {
-    const [boxes, setBoxes] = useState([]);
+function UserViewTable() {
+    const [users, setUsers] = useState(null);
 
     useEffect(function () {
         axios
-            .get("/box/")
+            .get("/users/")
             .then((resp) => {
                 console.log(resp.data);
-                setBoxes(resp.data);
+                setUsers(resp.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -77,79 +80,61 @@ function BoxViewTable() {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                     <StyledTableRow>
-                        <StyledTableCell align="left">Mailboxes</StyledTableCell>
-                        <StyledTableCell align="center"/>
-                        <StyledTableCell align="center"/>
+                        <StyledTableCell align="left">Users</StyledTableCell>
                         <StyledTableCell align="center"/>
                         <StyledTableCell align="center"/>
                     </StyledTableRow>
                 </TableHead>
                 <TableBody>
-                    {boxes.map((box) => (
+                    {users?.map((user) => (
                         <TableRow
-                            key={box._id}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell component="th" scope="row">
-                                <Grid container>
-                                    <Grid item lg={1}>
-                                        <InventoryIcon/>
-                                    </Grid>
-                                    <Grid item lg={10} sx={{ml:2}}>
-                                        <Typography>
-                                        {box.nickname}
-                                        </Typography>
+                                <Grid container >
+                                    <Grid item>
+                                        <Tooltip title="Add admin privilege">
+                                            <IconButton aria-label="admin">
+                                                <GroupAddIcon sx={{ color: red[700], fontSize:25 }}/>
+                                            </IconButton>
+                                        </Tooltip>
+                                        <HtmlTooltip
+                                            title={
+                                                <>
+                                                    <Typography  color="inherit" sx={{mb:1}}>Details:</Typography>
+                                                    <p>ID: {user?._id}</p>
+                                                    <p>Email: {user?.email}</p>
+                                                    <p>Mobile: {user?.phone}</p>
+                                                </>
+                                            }
+                                            placement="right"
+                                        >
+                                            <IconButton aria-label="owner" >
+                                                <OwnerIcon  sx={{ fontSize: 40}}/>
+                                            </IconButton>
+                                        </HtmlTooltip>
+                                        <span>{user?.name}</span>
+                                        <span>&nbsp;</span>
+                                        <span>{user?.surname}</span>
                                     </Grid>
                                 </Grid>
                             </TableCell>
-                            <TableCell component="th" scope="row">
+                            <StyledTableCell component="th" scope="row" align="left">
                                 <Grid container>
                                     <Grid item>
-                                    <HtmlTooltip
-                                        title={
-                                            <>
-                                                <Typography  color="inherit" sx={{mb:1}}>Details:</Typography>
-                                                <p>ID: {box.owner?._id}</p>
-                                                <p>Email: {box.owner?.email}</p>
-                                                <p>Mobile: {box.owner?.phone}</p>
-                                            </>
-                                        }
-                                        placement="right"
-                                    >
-                                        <IconButton aria-label="owner" >
-                                            <OwnerIcon/>
+                                        <IconButton aria-label="box" >
+                                            <Badge sx={{ "& .MuiBadge-badge": { fontSize: 10, height: 15, minWidth: 15 } }} badgeContent={4} color="primary">
+                                                <InventoryIcon sx={{ fontSize: 40}}/>
+                                            </Badge>
                                         </IconButton>
-                                    </HtmlTooltip>
-                                        <span>{box.owner?.name}</span>
-                                        <span>&nbsp;</span>
-                                        <span>{box.owner?.surname}</span>
                                     </Grid>
                                 </Grid>
-
-                            </TableCell>
-                            <StyledTableCell align="left">
-                                <IconButton aria-label="location">
-                                    <LocationOnIcon/>
-                                </IconButton>
-                                {box.location[0]} {box.location[1]}
                             </StyledTableCell>
-                            <StyledTableCell align="left">
-                                <Tooltip title="View">
-                                    <Link to={{
-                                        pathname: `/box/${box._id}`,
-                                    }} >
-                                        <IconButton aria-label="view">
-                                            <ViewIcon/>
-                                        </IconButton>
-                                    </Link>
-                                </Tooltip>
-                            </StyledTableCell>
-
-                            <StyledTableCell align="left">
+                            <StyledTableCell align="right">
                                 <Tooltip title="Disable">
-                                <IconButton aria-label="disable">
-                                    <DisableIcon color="error"/>
-                            </IconButton>
+                                    <IconButton aria-label="disable">
+                                        <DisableIcon color="error"/>
+                                    </IconButton>
                                 </Tooltip>
                             </StyledTableCell>
                         </TableRow>
@@ -159,4 +144,4 @@ function BoxViewTable() {
         </StyledTableContainer>
     );
 }
-export default BoxViewTable;
+export default UserViewTable;

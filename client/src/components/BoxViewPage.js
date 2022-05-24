@@ -7,6 +7,7 @@ import {useContext} from "react";
 import {UserContext} from "../userContext";
 import {useEffect} from "react";
 import axios from "../axios";
+import UserViewTable from "./UserViewTable";
 
 function BoxViewPage(props){
     const userContext = useContext(UserContext);
@@ -20,7 +21,7 @@ function BoxViewPage(props){
                     flexDirection: 'column',
                     alignItems: 'center',
                 }}>
-                {props.admin ? <BoxViewTable/> : <UserBoxViewTable/> }
+                {props.admin ? <UserViewTable/> : <UserBoxViewTable/> }
 
             </Box>
         </Container>

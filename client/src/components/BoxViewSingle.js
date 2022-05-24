@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {Badge, IconButton, makeStyles, tableCellClasses} from "@mui/material";
+import {Badge, IconButton, Input, makeStyles, tableCellClasses} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -21,6 +21,8 @@ import TagifyWithTemplates from "./TagifyWithTemplates";
 import MapBox from "./MapBox";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import EditIcon from '@mui/icons-material/Edit';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -56,8 +58,7 @@ const HtmlTooltip = styled(({ className, ...props }) => (
         backgroundColor: '#f5f5f9',
         color: 'rgba(0, 0, 0, 0.87)',
         maxWidth: 220,
-        fontSize: theme.typography.pxToRem(12),
-        border: '1px solid #fffff1',
+        fontSize: theme.typography.pxToRem(12)
     },
 }));
 
@@ -118,15 +119,30 @@ function BoxViewSingle() {
                         >
                             <TableCell component="th" scope="row">
                                 <Typography fontWeight="bold">
-                                    ID
+                                    <InventoryIcon/>
                                 </Typography>
                             </TableCell>
+
                             <TableCell component="th" scope="row">
                                 <Typography sx={{m:1}}>
-                                    {box._id}
+                                    {`${box.nickname} (${box.boxId})`}
                                 </Typography>
                             </TableCell>
+
                         </TableRow>
+                    {userContext.user?.admin && <TableRow>
+                        <TableCell component="th" scope="row">
+                            <Typography fontWeight="bold">
+                               ID
+                            </Typography>
+                        </TableCell>
+
+                        <TableCell component="th" scope="row">
+                            <Typography sx={{m:1}}>
+                                {box._id}
+                            </Typography>
+                        </TableCell>
+                    </TableRow>}
                     <TableRow
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
@@ -141,9 +157,9 @@ function BoxViewSingle() {
                             title={
                                 <>
                                     <Typography  color="inherit" sx={{mb:1}}>Details:</Typography>
-                                         <p> {box.owner?.email}</p>
-                                         <p> {box.owner?.phone}</p>
-                                         <p> {box.owner?._id}</p>
+                                    <p>ID: {box.owner?._id}</p>
+                                    <p>Email: {box.owner?.email}</p>
+                                    <p>Mobile: {box.owner?.phone}</p>
                                 </>
                             }
                             placement="right"

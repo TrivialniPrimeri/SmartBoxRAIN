@@ -8,6 +8,7 @@ import { useState, useContext } from "react";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 function Header(props){
 
@@ -40,6 +41,7 @@ function Header(props){
                     </ListItemButton>
                     {userCxt.user?.admin && <ListItemButton component={NavLink} to="/admin">
                         <ListItemText primary="Admin"/>
+                        <AdminPanelSettingsIcon/>
                     </ListItemButton>}
                     {userCxt.user ? <>
                     <ListItemButton component={NavLink} to="/profile" >
