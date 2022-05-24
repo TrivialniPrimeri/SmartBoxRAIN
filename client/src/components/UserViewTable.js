@@ -22,6 +22,7 @@ import {tooltipClasses} from "@mui/material/Tooltip";
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import GroupRemoveIcon from '@mui/icons-material/GroupRemove';
 import {pink, red} from "@mui/material/colors";
+import LockClockIcon from '@mui/icons-material/LockClock';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -83,6 +84,7 @@ function UserViewTable() {
                         <StyledTableCell align="left">Users</StyledTableCell>
                         <StyledTableCell align="center"/>
                         <StyledTableCell align="center"/>
+                        <StyledTableCell align="center"/>
                     </StyledTableRow>
                 </TableHead>
                 <TableBody>
@@ -127,6 +129,19 @@ function UserViewTable() {
                                                 <InventoryIcon sx={{ fontSize: 40}}/>
                                             </Badge>
                                         </IconButton>
+                                    </Grid>
+                                </Grid>
+                            </StyledTableCell>
+                            <StyledTableCell component="th" scope="row" align="center">
+                                <Grid container>
+                                    <Grid item>
+                                        <LockClockIcon/>
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography sx={{ml:1}}>
+                                           <Typography fontWeight={"bold"}>Last unlock:</Typography>
+                                           24.05.2022 12:22
+                                        </Typography>
                                     </Grid>
                                 </Grid>
                             </StyledTableCell>
