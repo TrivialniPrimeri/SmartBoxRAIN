@@ -10,6 +10,7 @@ var upload = multer({dest: 'public/images/'});
  */
 router.get('/', userController.list);
 router.get('/test', userController.create)
+router.get('/myboxes', userController.boxesList)
 
 /*
  * GET

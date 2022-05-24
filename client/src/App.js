@@ -48,7 +48,8 @@ function App() {
             <div className="App">
               <Header title="Spletni portal"></Header>
               <Routes>
-                <Route path="/" exact element={<BoxViewPage />}></Route>
+                <Route path="/" exact element={<BoxViewPage admin={false} />}></Route>
+                <Route path="/admin" exact element={<BoxViewPage admin={true} />}></Route>
                 <Route path="/login" exact element={<SignIn />}></Route>
                 <Route path="/register" exact element={<SignUp />}></Route>
                 <Route path="/profile" exact element={<Profile/>}></Route>

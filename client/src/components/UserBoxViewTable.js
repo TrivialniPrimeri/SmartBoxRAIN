@@ -52,13 +52,16 @@ const StyledTableContainer= styled(TableContainer)(({ theme }) => ({
 
 function UserBoxViewTable() {
     const [boxes, setBoxes] = useState([]);
+    const [authorizedBoxes, setAuthorizedBoxes] = useState([]);
     const [open, setOpen] = useState(false);
 
     useEffect(function () {
         axios
-            .get("/box/")
+            .get("/users/myboxes")
             .then((resp) => {
-                setBoxes(resp.data);
+                console.log(resp.data);
+                setBoxes(resp.data.boxes);
+                setAuthorizedBoxes(resp.data.authorizedBoxes);
             })
             .catch((err) => {
                 console.log(err);
@@ -66,61 +69,120 @@ function UserBoxViewTable() {
     }, [open]);
 
     return (
-        <StyledTableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                    <StyledTableRow>
-                        <StyledTableCell align="left">My Mailboxes</StyledTableCell>
-                        <StyledTableCell />
-                        <StyledTableCell />
-                    </StyledTableRow>
-                </TableHead>
-                <TableBody>
-                    {boxes.map((box) => (
-                        <TableRow
-                            key={box._id}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell component="th" scope="row">
-                                <Grid container>
-                                    <Grid item lg={1}>
-                                        <InventoryIcon/>
+        <>
+            <StyledTableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                        <StyledTableRow>
+                            <StyledTableCell align="left">My Mailboxes</StyledTableCell>
+                            <StyledTableCell />
+                            <StyledTableCell />
+                        </StyledTableRow>
+                    </TableHead>
+                    <TableBody>
+                        {boxes.map((box) => (
+                            <TableRow
+                                key={box._id}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            >
+                                <TableCell component="th" scope="row">
+                                    <Grid container>
+                                        <Grid item lg={1}>
+                                            <InventoryIcon/>
+                                        </Grid>
+                                        <Grid item>
+                                        </Grid>
+                                        <Grid item lg={7}>
+                                            <Typography>
+                                                {`${box.nickname} (${box.boxId})`}
+                                            </Typography>
+                                        </Grid>
                                     </Grid>
-                                    <Grid item>
+                                </TableCell>
+                                <StyledTableCell align="left">
+                                    <IconButton aria-label="location">
+                                        <LocationOnIcon/>
+                                    </IconButton>
+                                    {box.location[0]} {box.location[1]}
+                                </StyledTableCell>
+                                <StyledTableCell align="left">
+                                    <Tooltip title="View">
+                                        <Link to={{
+                                            pathname: `/box/${box._id}`,
+                                        }} >
+                                            <IconButton aria-label="view">
+                                                <ViewIcon/>
+                                            </IconButton>
+                                        </Link>
+                                    </Tooltip>
+                                </StyledTableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </StyledTableContainer>
+
+            {authorizedBoxes && 
+                <StyledTableContainer component={Paper} sx={{mt: 5}}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                        <StyledTableRow>
+                            <StyledTableCell align="left">Authorized Mailboxes</StyledTableCell>
+                            <StyledTableCell />
+                            <StyledTableCell />
+                        </StyledTableRow>
+                    </TableHead>
+                    <TableBody>
+                        {authorizedBoxes.map((box) => (
+                            <TableRow
+                                key={box._id}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            >
+                                <TableCell component="th" scope="row">
+                                    <Grid container>
+                                        <Grid item lg={1}>
+                                            <InventoryIcon/>
+                                        </Grid>
+                                        <Grid item>
+                                        </Grid>
+                                        <Grid item lg={7}>
+                                            <Typography>
+                                                {`${box.nickname} (${box.boxId})`}
+                                            </Typography>
+                                        </Grid>
                                     </Grid>
-                                    <Grid item lg={7}>
-                                        <Typography>
-                                            {`${box.nickname} (${box.boxId})`}
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                            </TableCell>
-                            <StyledTableCell align="left">
-                                <IconButton aria-label="location">
-                                    <LocationOnIcon/>
-                                </IconButton>
-                                {box.location[0]} {box.location[1]}
-                            </StyledTableCell>
-                            <StyledTableCell align="left">
-                                <Tooltip title="View">
-                                    <Link to={{
-                                        pathname: `/box/${box._id}`,
-                                    }} >
-                                        <IconButton aria-label="view">
-                                            <ViewIcon/>
-                                        </IconButton>
-                                    </Link>
-                                </Tooltip>
-                            </StyledTableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                                </TableCell>
+                                <StyledTableCell align="left">
+                                    <IconButton aria-label="location">
+                                        <LocationOnIcon/>
+                                    </IconButton>
+                                    {box.location[0]} {box.location[1]}
+                                </StyledTableCell>
+                                <StyledTableCell align="left">
+                                    <Tooltip title="View">
+                                        <Link to={{
+                                            pathname: `/box/${box._id}`,
+                                        }} >
+                                            <IconButton aria-label="view">
+                                                <ViewIcon/>
+                                            </IconButton>
+                                        </Link>
+                                    </Tooltip>
+                                </StyledTableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </StyledTableContainer>
+            }
+
+
             <Fab color="primary" style={{position: 'absolute', bottom: 0, right: 0, margin: '1%'}} onClick={() => {setOpen(true)}}>
-				<AddIcon htmlColor='white'/>
-			</Fab>
+            <AddIcon htmlColor='white'/>
+            </Fab>
             <AddBoxModal open={open} setOpen={setOpen}/>
-        </StyledTableContainer>
+        </>
+
     );
 }
 export default UserBoxViewTable;

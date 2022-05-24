@@ -36,8 +36,11 @@ function Header(props){
             <Drawer open={drawerState} onClose={() => setDrawerState(false)} className="navDrawer" >
                 <List>
                     <ListItemButton component={NavLink} to="/">
-                        <ListItemText primary="Home"/>
+                        <ListItemText primary="My boxes"/>
                     </ListItemButton>
+                    {userCxt.user?.admin && <ListItemButton component={NavLink} to="/admin">
+                        <ListItemText primary="Admin"/>
+                    </ListItemButton>}
                     {userCxt.user ? <>
                     <ListItemButton component={NavLink} to="/profile" >
                         <ListItemText primary="Profile"/>

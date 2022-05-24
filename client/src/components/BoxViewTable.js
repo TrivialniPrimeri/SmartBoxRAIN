@@ -93,7 +93,7 @@ function BoxViewTable() {
                                     </Grid>
                                     <Grid item lg={10}>
                                         <Typography>
-                                        {box._id}
+                                        {box.nickname}
                                         </Typography>
                                     </Grid>
                                 </Grid>

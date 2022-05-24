@@ -1,3 +1,4 @@
+const BoxModel = require("../models/boxModel.js");
 var UserModel = require("../models/userModel.js");
 
 /**
@@ -19,6 +20,22 @@ module.exports = {
       }
 
       return res.json(users);
+    });
+  },
+
+  boxesList: function (req, res) {
+    BoxModel.find({owner: req.user.id}).exec(function (err, boxes) {
+      if (err) {
+        return res.status(500).json({
+          message: "Error when getting user.",
+          error: err,
+        });
+      }
+
+      BoxModel.find({authorizedUsers: req.user.id}).exec(function (err, authorizedBoxes) {
+        return res.json({boxes: boxes, authorizedBoxes: authorizedBoxes});
+      })
+
     });
   },
 

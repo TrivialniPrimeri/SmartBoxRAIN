@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../userContext";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import axios from "../axios";
@@ -145,7 +145,7 @@ function Profile() {
               </Typography>
               <CardActions>
                 <Tooltip title="My boxes">
-                  <IconButton aria-label="My boxes">
+                  <IconButton aria-label="My boxes" component={Link} to="/">
                     <InventoryIcon color="primary" />
                   </IconButton>
                 </Tooltip>
