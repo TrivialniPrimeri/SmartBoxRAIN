@@ -7,13 +7,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {Badge, Fab, IconButton, makeStyles, tableCellClasses, Tooltip} from "@mui/material";
-import Avatar from '@mui/material/Avatar';
 import Grid from "@mui/material/Grid";
 import InventoryIcon from '@mui/icons-material/Inventory';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import ViewIcon from '@mui/icons-material/FindInPage';
-import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
+import ViewIcon from '@mui/icons-material/Visibility';
+import AuthorizedIcon from '@mui/icons-material/GppGood';
 import Typography from "@mui/material/Typography";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import {useEffect, useState} from "react";
@@ -45,6 +42,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 const StyledTableContainer= styled(TableContainer)(({ theme }) => ({
     '&:nth-of-type(odd)': {
+        borderRadius: 15,
+    },
+    '&:nth-of-type(even)': {
         borderRadius: 15,
     }
 }));
@@ -127,7 +127,7 @@ function UserBoxViewTable() {
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <StyledTableRow>
-                            <StyledTableCell align="left">Authorized Mailboxes</StyledTableCell>
+                            <StyledTableCell align="left"><AuthorizedIcon/> Authorized Mailboxes</StyledTableCell>
                             <StyledTableCell />
                             <StyledTableCell />
                         </StyledTableRow>

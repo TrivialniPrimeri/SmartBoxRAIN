@@ -7,18 +7,15 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {Badge, IconButton, makeStyles, tableCellClasses, Tooltip} from "@mui/material";
-import Avatar from '@mui/material/Avatar';
 import Grid from "@mui/material/Grid";
 import InventoryIcon from '@mui/icons-material/Inventory';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import ViewIcon from '@mui/icons-material/FindInPage';
-import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
+import ViewIcon from '@mui/icons-material/Visibility'
 import Typography from "@mui/material/Typography";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import {Link, useParams} from "react-router-dom";
 import {useContext, useEffect, useState} from "react";
-import {UserContext} from "../userContext";
 import axios from "../axios";
 
 
