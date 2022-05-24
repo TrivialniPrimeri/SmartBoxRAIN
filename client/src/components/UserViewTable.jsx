@@ -6,11 +6,11 @@ import OwnerIcon from "@mui/icons-material/ContactPage";
 import {tooltipClasses} from "@mui/material/Tooltip";
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import GroupRemoveIcon from '@mui/icons-material/GroupRemove';
-import {red} from "@mui/material/colors";
+import { red, green } from "@mui/material/colors";
 import LockClockIcon from '@mui/icons-material/LockClock';
 import moment from "moment";
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Badge, IconButton, tableCellClasses, Tooltip, Grid, Typography} from '@mui/material';
-
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -98,6 +98,11 @@ function UserViewTable() {
                         >
                             <TableCell component="th" scope="row">
                                 <Grid container >
+                                    <Grid item xs={1}>
+                                        {user.isAdmin &&
+                                            <AdminPanelSettingsIcon  sx={{ fontSize: 20,color:red[700]}}/>
+                                        }
+                                    </Grid>
                                     <Grid item>
                                         <HtmlTooltip
                                             title={
@@ -110,9 +115,11 @@ function UserViewTable() {
                                             }
                                             placement="right"
                                         >
-                                            <IconButton aria-label="owner" >
-                                                <OwnerIcon  sx={{ fontSize: 40}}/>
-                                            </IconButton>
+
+                                                <IconButton aria-label="owner" >
+                                                    <OwnerIcon  sx={{ fontSize: 40}}/>
+                                                </IconButton>
+
                                         </HtmlTooltip>
                                         <span>{user?.name}</span>
                                         <span>&nbsp;</span>
@@ -156,7 +163,7 @@ function UserViewTable() {
                                 :
                                 <Tooltip title="Add admin privilege">
                                     <IconButton aria-label="admin" onClick={() => updateProp(true, user._id, "isAdmin")}>
-                                        <GroupAddIcon sx={{ color: red[700], fontSize:25 }}/>
+                                        <GroupAddIcon sx={{ color: green[700], fontSize:25 }}/>
                                     </IconButton>
                                 </Tooltip>
                             }
