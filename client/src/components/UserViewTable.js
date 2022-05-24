@@ -23,6 +23,7 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import GroupRemoveIcon from '@mui/icons-material/GroupRemove';
 import {pink, red} from "@mui/material/colors";
 import LockClockIcon from '@mui/icons-material/LockClock';
+import moment from "moment";
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -64,18 +65,33 @@ const HtmlTooltip = styled(({ className, ...props }) => (
 
 function UserViewTable() {
     const [users, setUsers] = useState(null);
+    const [needsUpdate, setNeedsUpdate] = useState(true);
+
+    const setAdmin = (state, userId) => {
+
+        axios.put('/users/' + userId, {
+            isAdmin: state
+        }).then(response => {
+            setNeedsUpdate(true);
+        }).catch(error => {
+            console.log(error);
+        });
+    }
 
     useEffect(function () {
-        axios
-            .get("/users/")
+        if(needsUpdate){
+            axios
+            .get("/users/all")
             .then((resp) => {
-                console.log(resp.data);
                 setUsers(resp.data);
+                setNeedsUpdate(false);
             })
             .catch((err) => {
                 console.log(err);
             });
-    }, []);
+        }
+    }, [needsUpdate]);
+
     return (
         <StyledTableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -95,11 +111,6 @@ function UserViewTable() {
                             <TableCell component="th" scope="row">
                                 <Grid container >
                                     <Grid item>
-                                        <Tooltip title="Add admin privilege">
-                                            <IconButton aria-label="admin">
-                                                <GroupAddIcon sx={{ color: red[700], fontSize:25 }}/>
-                                            </IconButton>
-                                        </Tooltip>
                                         <HtmlTooltip
                                             title={
                                                 <>
@@ -124,11 +135,13 @@ function UserViewTable() {
                             <StyledTableCell component="th" scope="row" align="left">
                                 <Grid container>
                                     <Grid item>
+                                    <Tooltip title="Number of boxes">
                                         <IconButton aria-label="box" >
-                                            <Badge sx={{ "& .MuiBadge-badge": { fontSize: 10, height: 15, minWidth: 15 } }} badgeContent={4} color="primary">
+                                            <Badge sx={{ "& .MuiBadge-badge": { fontSize: 10, height: 15, minWidth: 15 } }} badgeContent={user.boxCount} color="primary">
                                                 <InventoryIcon sx={{ fontSize: 40}}/>
                                             </Badge>
                                         </IconButton>
+                                    </Tooltip>
                                     </Grid>
                                 </Grid>
                             </StyledTableCell>
@@ -140,17 +153,25 @@ function UserViewTable() {
                                     <Grid item>
                                         <Typography sx={{ml:1}}>
                                            <Typography fontWeight={"bold"}>Last unlock:</Typography>
-                                           24.05.2022 12:22
+                                           {moment(user.lastUnlock).format("DD.MM.YYYY HH:mm")}
                                         </Typography>
                                     </Grid>
                                 </Grid>
                             </StyledTableCell>
                             <StyledTableCell align="right">
-                                <Tooltip title="Disable">
-                                    <IconButton aria-label="disable">
-                                        <DisableIcon color="error"/>
+                            {user.isAdmin ? 
+                                <Tooltip title="Remove admin privilege">
+                                    <IconButton aria-label="admin" onClick={() => setAdmin(false, user._id)}>
+                                        <GroupRemoveIcon sx={{ color: red[700], fontSize:25 }}/>
                                     </IconButton>
                                 </Tooltip>
+                                :
+                                <Tooltip title="Add admin privilege">
+                                    <IconButton aria-label="admin" onClick={() => setAdmin(true, user._id)}>
+                                        <GroupAddIcon sx={{ color: red[700], fontSize:25 }}/>
+                                    </IconButton>
+                                </Tooltip>
+                            }
                             </StyledTableCell>
                         </TableRow>
                     ))}

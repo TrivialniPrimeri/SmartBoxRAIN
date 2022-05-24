@@ -22,6 +22,7 @@ var boxSchema = new Schema(
       },
     ],
     location: [Number],
+    locationAddress: String,
     active: Boolean,
     dimension: String,
   },

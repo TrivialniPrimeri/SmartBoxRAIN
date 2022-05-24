@@ -1,6 +1,8 @@
 var BoxModel = require('../models/boxModel.js');
 const axios = require('axios');
 const mongoose = require("mongoose");
+const unlockModel = require('../models/unlockModel.js');
+const boxModel = require('../models/boxModel.js');
 
 /**
  * boxController.js
@@ -13,6 +15,9 @@ module.exports = {
      * boxController.list()
      */
     list: function (req, res) {
+
+        if(!req.user.isAdmin) return res.sendStatus(403);
+
         BoxModel.find().populate('owner').exec(function (err, boxes) {
             if (err) {
                 return res.status(500).json({
@@ -31,7 +36,7 @@ module.exports = {
     show: function (req, res) {
         var id = req.params.id;
 
-        BoxModel.findOne({_id: id}).populate('owner').populate('location').populate('authorizedUsers').exec( function (err, box) {
+        BoxModel.findOne({_id: id}).populate('owner').populate('location').populate('authorizedUsers').lean().exec( async function (err, box) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting box.',
@@ -44,6 +49,10 @@ module.exports = {
                     message: 'No such box'
                 });
             }
+
+            const latestUnlock = await unlockModel.find({boxId: box._id}).populate("userId").sort({createdAt: -1}).limit(1);
+            box.latestUnlock = latestUnlock[0];
+            console.log(box.latestUnlock);
 
             return res.json(box);
         });
@@ -179,5 +188,28 @@ module.exports = {
         }).catch((err) => {
             return res.json({errorNumber: err.response.status})
         })
+    },
+
+    allUnlocks: function (req, res) {
+
+        boxModel.findById(req.params.id).exec(function (err, box) {
+            if(err) return res.sendStatus(500);
+            
+            if(req.user.id != box.owner && !req.user.isAdmin) return res.sendStatus(403);
+
+            unlockModel.find({boxId: req.params.id}).populate("userId").exec(function (err, unlocks) {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).json({
+                        message: 'Error when getting unlocks.',
+                        error: err
+                    });
+                }
+    
+                return res.json(unlocks);
+            });
+
+        });
+
     },
 };

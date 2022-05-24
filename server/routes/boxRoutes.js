@@ -8,6 +8,8 @@ router.get('/:id', boxController.show);
 
 router.get('/unlock/:id', boxController.unlock);
 
+router.get('/:id/unlocks', boxController.allUnlocks);
+
 router.post('/', boxController.create);
 
 router.put('/:id', boxController.update);

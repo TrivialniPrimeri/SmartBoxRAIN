@@ -1,15 +1,20 @@
 import axios from 'axios';
+import { useContext } from 'react';
+import { UserContext } from './userContext';
+
 
 const instance = axios.create({
 	baseURL: 'http://localhost:81/',
 	withCredentials: true,
 });
 
+
 instance.interceptors.response.use(
 	req => {
 		return req;
 	}, 
 	async (err) => {
+
 		const originalRequest = err.config;
 		if((err.response.status === 401) && !originalRequest._retry){ //unauthorized
 			originalRequest._retry = true;

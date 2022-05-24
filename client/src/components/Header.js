@@ -9,6 +9,11 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import LoginIcon from '@mui/icons-material/Login';
+import InventoryIcon from "@mui/icons-material/Inventory";
 
 function Header(props){
 
@@ -37,24 +42,29 @@ function Header(props){
             <Drawer open={drawerState} onClose={() => setDrawerState(false)} className="navDrawer" >
                 <List>
                     <ListItemButton component={NavLink} to="/">
+                        <InventoryIcon sx={{mr: 1}}/>
                         <ListItemText primary="My boxes"/>
                     </ListItemButton>
                     {userCxt.user?.admin && <ListItemButton component={NavLink} to="/admin">
+                        <AdminPanelSettingsIcon sx={{mr: 1}}/>
                         <ListItemText primary="Admin"/>
-                        <AdminPanelSettingsIcon/>
                     </ListItemButton>}
                     {userCxt.user ? <>
                     <ListItemButton component={NavLink} to="/profile" >
+                        <AccountCircleIcon sx={{mr: 1}}/>
                         <ListItemText primary="Profile"/>
                     </ListItemButton>
                         <ListItemButton component={NavLink} to="/logout" >
+                            <LogoutIcon sx={{mr: 1}}/>
                             <ListItemText primary="Logout"/>
                         </ListItemButton>
                     </> : <>
                         <ListItemButton component={NavLink} to="/login">
+                            <LoginIcon sx={{mr: 1}}/>
                             <ListItemText primary="Login" />
                         </ListItemButton>
                         <ListItemButton component={NavLink} to="/register">
+                            <PersonAddIcon sx={{mr: 1}}/>
                             <ListItemText primary="Register" />
                         </ListItemButton>
                     </>}

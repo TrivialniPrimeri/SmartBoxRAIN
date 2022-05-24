@@ -9,8 +9,10 @@ var upload = multer({dest: 'public/images/'});
  * GET
  */
 router.get('/', userController.list);
+router.get('/all', userController.listAll);
 router.get('/test', userController.create)
 router.get('/myboxes', userController.boxesList)
+router.get('/:id/unlocks', userController.allUnlocks);
 
 /*
  * GET

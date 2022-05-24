@@ -1,6 +1,7 @@
 var UserModel = require("../models/userModel.js");
 var UserController = require("../controllers/userController.js");
 const jwt = require("jsonwebtoken");
+const { default: mongoose } = require("mongoose");
 
 function generateAccToken(user){
 	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30s" }); //30mins cca
@@ -33,11 +34,22 @@ module.exports = {
 		if(refreshToken == null) return res.sendStatus(401);
 
 		jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => { //no blacklist so far
+
 			if (err) return res.sendStatus(403);
-			const accessToken = generateAccToken({email: user.email, id: user.id, isAdmin: user.isAdmin});
-			res
-			.cookie('accessToken', accessToken, {maxAge: 25_000, httpOnly: true, path: '/' })
-			.json({accessToken: accessToken});
+
+			UserModel.findById(user.id, function(err, mongoUser){
+
+				if(!mongoUser || err) return res.sendStatus(403);
+
+				const accessToken = generateAccToken({email: mongoUser.email, id: mongoUser._id, isAdmin: mongoUser.isAdmin});
+				res
+				.cookie('accessToken', accessToken, {maxAge: 25_000, httpOnly: true, path: '/' })
+				.json({accessToken: accessToken});
+
+			});
+			return;
+
+
 		});
 
     },

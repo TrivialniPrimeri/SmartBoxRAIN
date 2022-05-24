@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {Badge, IconButton, Input, makeStyles, tableCellClasses} from "@mui/material";
+import {Badge, Button, IconButton, Input, makeStyles, tableCellClasses, Modal} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -23,6 +23,8 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import EditIcon from '@mui/icons-material/Edit';
+import moment from "moment";
+import LockOpenIcon from '@mui/icons-material/LockOpen';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -35,6 +37,20 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
         fontSize: 14,
     },
 }));
+
+const modalStyle = {
+	position: 'absolute',
+	top: '50%',
+	left: '50%',
+    maxHeight: '70%',
+    overflow: 'auto',
+	transform: 'translate(-50%, -50%)',
+	width: 800,
+	bgcolor: 'background.paper',
+	borderRadius: 4,
+	boxShadow: 24,
+	p: 4,
+  };
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
@@ -67,6 +83,17 @@ function BoxViewSingle() {
     const [box, setBox] = useState({});
     const [users, setUsers] = useState(null);
     const { id } = useParams()
+    const [historyModalOpen, setHistoryModalOpen] = useState(false);
+    const [history, setHistory] = useState([]);
+
+    useEffect(() => {
+        axios.get(`/box/${id}/unlocks`)
+            .then(res => {
+                setHistory(res.data);
+            })
+            .catch(err => console.log(err));
+    }, [historyModalOpen]);
+    
 
     useEffect(function () {
         axios
@@ -217,12 +244,13 @@ function BoxViewSingle() {
                             </TableCell>
                         </TableRow>
                     ) : null}
+                    {box.latestUnlock ? (
                     <TableRow
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                         <TableCell component="th" scope="row">
                             <Typography fontWeight="bold">
-                                Location
+                                Latest unlock
                             </Typography>
                         </TableCell>
                         <TableCell component="th" scope="row">
@@ -231,21 +259,60 @@ function BoxViewSingle() {
                                     bgcolor: "transparent"
                                 }
                             }}>
-                                <LocationOnIcon/>
+                                <LockOpenIcon/>
                             </IconButton>
-                            {box.location ?  box.location[0]:""} {box.location ? box.location[1]:""}
+                                {moment(box.latestUnlock.createdAt).format("DD.MM.YYYY HH:mm") + " by " + box.latestUnlock.userId.name + " " + box.latestUnlock.userId.surname}
+                                {userContext.user.id === box.owner._id && <Button variant="contained" color="primary" sx={{ml: 2}} onClick={(e) => {setHistoryModalOpen(true)}}>View all</Button>}
                         </TableCell>
                     </TableRow>
+                    ) : (
+                        ""
+                    )}
                     <TableRow>
-                        <Container sx={{display: 'flex' , m:2}}>
-                            {box.location ? <MapBox coords={{lat: box.location[0], lng: box.location[1]}}/> : ""}
-                        </Container>
+                        <TableCell colSpan={2}>
+                            <Container sx={{display: 'flex' , m:2}}>
+                                {box.location ? <MapBox coords={{lat: box.location[0], lng: box.location[1]}}/> : ""}
+                            </Container>
+                        </TableCell>
                     </TableRow>
                 </TableBody>
             </Table>
 
         </StyledTableContainer>
             </Box>
+            <Modal open={historyModalOpen} onClose={() => setHistoryModalOpen(false)}>
+                <Box sx={modalStyle}>
+                    <Typography variant="h6" gutterBottom align="center">
+                        Unlock History
+                    </Typography>
+                    <TableContainer component={Paper}>
+                        <Table aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Date</TableCell>
+                                    <TableCell>User</TableCell>
+                                    <TableCell>sendStatus</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {history && history.map((unlock) => (
+                                    <TableRow key={unlock._id}>
+                                        <TableCell component="th" scope="row">
+                                            {moment(unlock.createdAt).format("DD.MM.YYYY HH:mm")}
+                                        </TableCell>
+                                        <TableCell component="th" scope="row">
+                                            {unlock.userId.name + " " + unlock.userId.surname}
+                                        </TableCell>
+                                        <TableCell component="th" scope="row">
+                                            {unlock.success ? "Success" : "Failed"}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>  
+                </Box>
+            </Modal>
         </Container>
     );
 }

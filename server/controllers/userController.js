@@ -1,4 +1,7 @@
+const { default: mongoose, mongo } = require("mongoose");
+const boxModel = require("../models/boxModel.js");
 const BoxModel = require("../models/boxModel.js");
+const unlockModel = require("../models/unlockModel.js");
 var UserModel = require("../models/userModel.js");
 
 /**
@@ -11,7 +14,7 @@ module.exports = {
    * userController.list()
    */
   list: function (req, res) {
-    UserModel.find({},'_id name surname email').exec(function (err, users) {
+    UserModel.find({},'_id name surname email phone').exec(function (err, users) {
       if (err) {
         return res.status(500).json({
           message: "Error when getting user.",
@@ -20,6 +23,36 @@ module.exports = {
       }
 
       return res.json(users);
+    });
+  },
+
+  listAll: function (req, res) {
+
+    if(!req.user.isAdmin) return res.sendStatus(403);
+
+    UserModel.find({}).lean().exec(async function (err, users) {
+
+      if (err) {
+        return res.status(500).json({
+          message: "Error when getting user.",
+          error: err,
+        });
+      }
+
+      if(!users) return res.json([]);
+      for(const user of users) {
+        const count = await boxModel.count({owner: user._id});
+        user.boxCount = count;
+
+        const lastUnlock = await unlockModel.find({userId: user._id}).sort({createdAt: -1}).limit(1);
+        if(lastUnlock.length > 0) {
+          user.lastUnlock = lastUnlock[0].createdAt;
+        }
+
+      }
+
+      return res.json(users);
+
     });
   },
 
@@ -45,7 +78,7 @@ module.exports = {
   show: function (req, res) {
     var id = req.params.id;
 
-    if(id != req.user.id && !req.user.admin){
+    if(id != req.user.id && !req.user.isAdmin){
       return res.sendStatus(403);
     }
 
@@ -100,7 +133,7 @@ module.exports = {
 
     var id = req.params.id;
 
-    if(id != req.user.id && !req.user.admin){
+    if(id != req.user.id && !req.user.isAdmin){
       return res.sendStatus(403);
     }
 
@@ -117,9 +150,11 @@ module.exports = {
           message: "No such user",
         });
       }
+
       user.name = req.body.name ? req.body.name : user.name;
       user.surname = req.body.surname ? req.body.surname : user.surname;
       user.phone = req.body.phone ? req.body.phone : user.phone;
+      user.isAdmin = (req.body.isAdmin != undefined) ? req.body.isAdmin : user.isAdmin;
       user.address = req.body.address ? req.body.address : user.address;
       user.email = req.body.email ? req.body.email : user.email;
       user.password = req.body.password ? req.body.password : user.password;
@@ -144,7 +179,7 @@ module.exports = {
   remove: function (req, res) {
     var id = req.params.id;
 
-    if(id != req.user.id && !req.user.admin){
+    if(id != req.user.id && !req.user.isAdmin){
       return res.sendStatus(403);
     }
 
@@ -157,6 +192,23 @@ module.exports = {
       }
 
       return res.status(204).json();
+    });
+  },
+
+  allUnlocks: function (req, res) {
+
+    if(!req.user.isAdmin && req.user.id != req.params.id) return res.sendStatus(403);
+
+    unlockModel.find({userId: req.params.id}).populate("boxId").exec(function (err, boxes) {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                message: 'Error when getting box.',
+                error: err
+            });
+        }
+
+        return res.json(boxes);
     });
   },
 };
