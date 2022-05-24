@@ -177,7 +177,7 @@ function BoxViewSingle() {
                             </Typography>
                         </TableCell>
                     </TableRow>
-                    {box.owner?._id === userContext.user.id ? (
+                    {box.owner?._id === userContext.user.id || userContext.user.admin ? (
                         <TableRow
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                 <TableCell component="th" scope="row">
@@ -195,7 +195,7 @@ function BoxViewSingle() {
                                         }}> <AuthorizedIcon/> </IconButton>
                                     </Grid>
                                     <Grid item lg>
-                                        {users && box.authorizedUsers && <TagifyWithTemplates authorizedUsers={box.authorizedUsers} users={users}  />}
+                                        {users && box.authorizedUsers && <TagifyWithTemplates authorizedUsers={box.authorizedUsers} owner={box.owner} users={users}  />}
                                     </Grid>
                                 </Grid>
                             </TableCell>

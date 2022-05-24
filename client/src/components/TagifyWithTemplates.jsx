@@ -37,6 +37,8 @@ const TagifyWithTemplates = (props) => {
     const { id } = useParams()
     const [error, setError] = useState("");
 
+    const filteredUsers = props.users.filter(user => user._id !== props.owner._id);
+
     const updateAuthorizedUsers = useCallback((e) => {
         console.log("CHANGED:", e.detail.tagify.getCleanValue())
         let authorized = e.detail.tagify.getCleanValue()
@@ -69,7 +71,7 @@ const TagifyWithTemplates = (props) => {
                         dropdownItem: suggestionItemTemplate
 
                     },
-                    whitelist: props.users.map(({ _id,name,surname,email}) => ({value: _id, name:name,surname:surname,email:email})),
+                    whitelist: filteredUsers.map(({ _id,name,surname,email}) => ({value: _id, name:name,surname:surname,email:email})),
                     enforceWhitelist: true
                 }}
                 defaultValue={props.authorizedUsers.map(({ _id,name}) => ({value: _id, name:name}))}
