@@ -145,7 +145,7 @@ function BoxViewTable() {
                                 </Tooltip>
                             </StyledTableCell>
 
-                            <StyledTableCell align="left">
+                            <StyledTableCell align="right">
                                 <Tooltip title="Disable">
                                 <IconButton aria-label="disable">
                                     <DisableIcon color="error"/>
