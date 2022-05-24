@@ -61,15 +61,16 @@ function Header(props){
             </StyledAppBar>
             <StyledDrawer open={drawerState} onClose={() => setDrawerState(false)} className="navDrawer" >
                 <List>
-                    <ListItemButton component={NavLink} to="/">
-                        <InventoryIcon sx={{mr: 1}}/>
-                        <ListItemText primary="My boxes"/>
-                    </ListItemButton>
+
                     {userCxt.user?.admin && <ListItemButton component={NavLink} to="/admin">
                         <AdminPanelSettingsIcon sx={{mr: 1}}/>
                         <ListItemText primary="Admin"/>
                     </ListItemButton>}
                     {userCxt.user ? <>
+                    <ListItemButton component={NavLink} to="/">
+                        <InventoryIcon sx={{mr: 1}}/>
+                        <ListItemText primary="My boxes"/>
+                    </ListItemButton>
                     <ListItemButton component={NavLink} to="/profile" >
                         <AccountCircleIcon sx={{mr: 1}}/>
                         <ListItemText primary="Profile"/>

@@ -4,10 +4,14 @@ import Box from '@mui/material/Box';
 import {useContext} from "react";
 import {UserContext} from "../userContext";
 import AdminDashboard from "./AdminDashboard";
+import { useNavigate } from "react-router-dom";
 
 function BoxViewPage(props){
     const userContext = useContext(UserContext);
-    console.log(userContext.user)
+    const navigator = useNavigate();
+
+    if(!userContext.user) navigator("/login")
+
     return(
         <Container>
             <Box
