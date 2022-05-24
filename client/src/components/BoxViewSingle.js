@@ -177,29 +177,30 @@ function BoxViewSingle() {
                             </Typography>
                         </TableCell>
                     </TableRow>
-                    <TableRow
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                        <TableCell component="th" scope="row">
-                            <Typography fontWeight="bold">
-                                Authorized
-                            </Typography>
-                        </TableCell>
-                        <TableCell component="tr" scope="row">
-                            <Grid container >
-                                <Grid item>
-                                    <IconButton aria-label="location"  sx={{
-                                        "&.MuiButtonBase-root:hover": {
-                                            bgcolor: "transparent"
-                                        }
-                                    }}> <AuthorizedIcon/> </IconButton>
+                    {box.owner?._id === userContext.user.id ? (
+                        <TableRow
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                <TableCell component="th" scope="row">
+                                    <Typography fontWeight="bold">
+                                        Authorized
+                                    </Typography>
+                                </TableCell>
+                                <TableCell component="tr" scope="row">
+                                <Grid container >
+                                    <Grid item>
+                                        <IconButton aria-label="location"  sx={{
+                                            "&.MuiButtonBase-root:hover": {
+                                                bgcolor: "transparent"
+                                            }
+                                        }}> <AuthorizedIcon/> </IconButton>
+                                    </Grid>
+                                    <Grid item lg>
+                                        {users && box.authorizedUsers && <TagifyWithTemplates authorizedUsers={box.authorizedUsers} users={users}  />}
+                                    </Grid>
                                 </Grid>
-                                <Grid item lg>
-                                    {users && box.authorizedUsers && <TagifyWithTemplates authorizedUsers={box.authorizedUsers} users={users}  />}
-                                </Grid>
-                            </Grid>
-                        </TableCell>
-                    </TableRow>
+                            </TableCell>
+                        </TableRow>
+                    ) : null}
                     <TableRow
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
