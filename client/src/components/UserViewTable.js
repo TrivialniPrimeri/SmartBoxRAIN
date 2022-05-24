@@ -67,11 +67,13 @@ function UserViewTable() {
     const [users, setUsers] = useState(null);
     const [needsUpdate, setNeedsUpdate] = useState(true);
 
-    const setAdmin = (state, userId) => {
+    const updateProp = (state, userId, propName) => {
 
-        axios.put('/users/' + userId, {
-            isAdmin: state
-        }).then(response => {
+        let props = {};
+        props[propName] = state;
+
+        axios.put('/users/' + userId, props)
+        .then(response => {
             setNeedsUpdate(true);
         }).catch(error => {
             console.log(error);
@@ -161,13 +163,13 @@ function UserViewTable() {
                             <StyledTableCell align="right">
                             {user.isAdmin ? 
                                 <Tooltip title="Remove admin privilege">
-                                    <IconButton aria-label="admin" onClick={() => setAdmin(false, user._id)}>
+                                    <IconButton aria-label="admin" onClick={() => updateProp(false, user._id, "isAdmin")}>
                                         <GroupRemoveIcon sx={{ color: red[700], fontSize:25 }}/>
                                     </IconButton>
                                 </Tooltip>
                                 :
                                 <Tooltip title="Add admin privilege">
-                                    <IconButton aria-label="admin" onClick={() => setAdmin(true, user._id)}>
+                                    <IconButton aria-label="admin" onClick={() => updateProp(true, user._id, "isAdmin")}>
                                         <GroupAddIcon sx={{ color: red[700], fontSize:25 }}/>
                                     </IconButton>
                                 </Tooltip>

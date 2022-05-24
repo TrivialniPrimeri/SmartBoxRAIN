@@ -57,7 +57,7 @@ module.exports = {
   },
 
   boxesList: function (req, res) {
-    BoxModel.find({owner: req.user.id}).exec(function (err, boxes) {
+    BoxModel.find({owner: req.user.id, active: true}).exec(function (err, boxes) {
       if (err) {
         return res.status(500).json({
           message: "Error when getting user.",

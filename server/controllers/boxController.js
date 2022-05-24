@@ -108,7 +108,7 @@ module.exports = {
             box.owner = req.body.owner ? req.body.owner : box.owner;
             box.authorizedUsers = req.body.authorized ? req.body.authorized : box.authorizedUsers;
 			box.location = req.body.location ? req.body.location : box.location;
-			box.active = req.body.active ? req.body.active : box.active;
+			box.active = req.body.active != undefined ? req.body.active : box.active;
 			box.dimension = req.body.dimension ? req.body.dimension : box.dimension;
 			
             box.save(function (err, box) {

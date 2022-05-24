@@ -10,6 +10,7 @@ import {Badge, IconButton, makeStyles, tableCellClasses, Tooltip} from "@mui/mat
 import Grid from "@mui/material/Grid";
 import InventoryIcon from '@mui/icons-material/Inventory';
 import DisableIcon from '@mui/icons-material/Cancel';
+import EnableIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
 import ViewIcon from '@mui/icons-material/Visibility'
 import Typography from "@mui/material/Typography";
@@ -60,18 +61,34 @@ const HtmlTooltip = styled(({ className, ...props }) => (
 
 function BoxViewTable() {
     const [boxes, setBoxes] = useState([]);
+    const [needsUpdate, setNeedsUpdate] = useState(true);
+
+    const updateProp = (state, boxId, propName) => {
+
+        let props = {};
+        props[propName] = state;
+
+        axios.put('/box/' + boxId, props)
+        .then(response => {
+            setNeedsUpdate(true);
+        }).catch(error => {
+            console.log(error);
+        });
+    }
 
     useEffect(function () {
-        axios
-            .get("/box/")
-            .then((resp) => {
-                console.log(resp.data);
-                setBoxes(resp.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }, []);
+        if(needsUpdate){
+            axios
+                .get("/box/")
+                .then((resp) => {
+                    setBoxes(resp.data);
+                    setNeedsUpdate(false);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+    }, [needsUpdate]);
     return (
         <StyledTableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -144,13 +161,22 @@ function BoxViewTable() {
                                     </Link>
                                 </Tooltip>
                             </StyledTableCell>
-
                             <StyledTableCell align="right">
+                            {box.active ? (
                                 <Tooltip title="Disable">
-                                <IconButton aria-label="disable">
-                                    <DisableIcon color="error"/>
-                            </IconButton>
+                                    <IconButton aria-label="disable" onClick={() => updateProp(false, box._id, "active")}>
+                                        <DisableIcon color="error"/>
+                                    </IconButton>
                                 </Tooltip>
+                            ) : (
+                            <Tooltip title="Enable">
+                                <IconButton aria-label="enable" onClick={() => updateProp(true, box._id, "active")}>
+                                    <EnableIcon color="success"/>
+                                </IconButton>
+                            </Tooltip>
+                            )}
+                            
+
                             </StyledTableCell>
                         </TableRow>
                     ))}
