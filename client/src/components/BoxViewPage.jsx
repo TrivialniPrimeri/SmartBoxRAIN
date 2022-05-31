@@ -10,7 +10,7 @@ function BoxViewPage(props){
     const userContext = useContext(UserContext);
     const navigator = useNavigate();
 
-    if(!userContext.user) navigator("/login")
+    if(userContext.user == null) navigator("/login")
 
     return(
         <Container>

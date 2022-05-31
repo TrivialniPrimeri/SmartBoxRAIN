@@ -24,7 +24,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-const allowedOrigins = ['http://localhost', 'http://localhost:81'];
+const allowedOrigins = ['https://trivialci.maticsulc.com/', 'https://trivialciapi.maticsulc.com/'];
 app.use(cors({
 	credentials: true,
 	origin(origin, callback) {
