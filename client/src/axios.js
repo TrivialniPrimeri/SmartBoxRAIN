@@ -5,6 +5,8 @@ const instance = axios.create({
 	withCredentials: true,
 });
 
+//I can't do useState here since it's not a component
+
 instance.interceptors.response.use(
 	req => {
 		return req;

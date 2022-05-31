@@ -138,7 +138,7 @@ function BoxViewTable() {
                                 <IconButton aria-label="location">
                                     <LocationOnIcon/>
                                 </IconButton>
-                                {box.location[0]} {box.location[1]}
+                                {box.locationAddress}
                             </StyledTableCell>
                             <StyledTableCell align="left">
                                 <Tooltip title="View">

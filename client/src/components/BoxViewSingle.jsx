@@ -207,6 +207,20 @@ function BoxViewSingle() {
                             </Typography>
                         </TableCell>
                     </TableRow>
+                    <TableRow
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                        <TableCell component="th" scope="row">
+                            <Typography fontWeight="bold">
+                                Closest address
+                            </Typography>
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                            <Typography sx={{m:1}}>
+                                {box?.locationAddress} 
+                            </Typography>
+                        </TableCell>
+                    </TableRow>
                     {box.owner?._id === userContext.user.id || userContext.user.admin ? (
                         <TableRow
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>

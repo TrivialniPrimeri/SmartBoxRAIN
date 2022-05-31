@@ -45,18 +45,19 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 function checkAuth(req, res, next){
+
   const token = req.cookies.accessToken;
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
+    if (err) return res.sendStatus(401);
     req.user = user; //saves user data!
     next();
   });
 }
 app.use('/auth', authRouter);
 app.use('/users', checkAuth, usersRouter);
-app.use('/box', boxesRouter);
+app.use('/box', checkAuth, boxesRouter);
 app.use('/unlocks', checkAuth, unlocksRouter);
 
 // catch 404 and forward to error handler
@@ -69,8 +70,8 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
   // render the error page
+  console.log(err);
   res.status(err.status || 500);
   res.json(err);
 });

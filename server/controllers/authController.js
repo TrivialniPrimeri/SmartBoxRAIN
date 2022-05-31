@@ -34,7 +34,7 @@ module.exports = {
 
 		jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => { //no blacklist so far
 
-			if (err) return res.sendStatus(403);
+			if (err) return res.sendStatus(401); //invalid
 
 			UserModel.findById(user.id, function(err, mongoUser){
 

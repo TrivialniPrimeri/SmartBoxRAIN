@@ -28,7 +28,7 @@ module.exports = {
 
   listAll: function (req, res) {
 
-    if(!req.user.isAdmin) return res.sendStatus(403);
+    if(!req.user?.isAdmin) return res.sendStatus(403);
 
     UserModel.find({}).lean().exec(async function (err, users) {
 
@@ -82,7 +82,7 @@ module.exports = {
       return res.sendStatus(403);
     }
 
-    UserModel.findOne({ _id: id }, function (err, user) {
+    UserModel.findOne({ _id: id }).lean().exec(async function (err, user) {
       if (err) {
         return res.status(500).json({
           message: "Error when getting user.",
@@ -96,6 +96,12 @@ module.exports = {
         });
       }
 
+      const count = await boxModel.count({owner: user._id});
+      user.boxCount = count;
+
+      const authorizedCount = await boxModel.count({authorizedUsers: user._id});
+      user.authorizedCount = authorizedCount;
+      
       return res.json(user);
     });
   },
@@ -200,9 +206,9 @@ module.exports = {
 
   allUnlocks: function (req, res) {
 
-    if(!req.user.isAdmin && req.user.id != req.params.id) return res.sendStatus(403);
+    if(!req.user?.isAdmin && req.user?.id != req.params.id) return res.sendStatus(403);
 
-    unlockModel.find({userId: req.params.id}).populate("boxId").exec(function (err, boxes) {
+    unlockModel.find({userId: req.params.id}, 'boxId success createdAt').populate("boxId").exec(function (err, boxes) {
         if (err) {
             return res.status(500).json({
                 message: 'Error when getting box.',
