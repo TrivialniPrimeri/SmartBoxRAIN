@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from '../axios';
 import { Typography, Box, Button, Stepper, Step, StepLabel, Input, InputLabel, Grid } from '@mui/material';
 import Modal from '@mui/material/Modal';
@@ -27,6 +27,19 @@ const AddBoxModal = (props) => {
 		dimension: '',
 		location: [],
 	});
+
+
+	useEffect(function () {
+		if(props.type === "edit"){
+			setData({
+				id: props.box._id,
+				boxId: props.box.boxId,
+				nickname: props.box.nickname,
+				dimension: props.box.dimension,
+				location: props.box.location,
+			});
+		}
+	}, [props.open]);
 
 	const validateData = () => {
 		switch(activeStep) {
@@ -62,12 +75,24 @@ const AddBoxModal = (props) => {
 
 	const handleSubmit = () => {
 
-		axios.post('/box/', data).then(resp => {
-			setActiveStep(0);
-			props.setOpen(false);
-		}).catch(err => {
-			setError("An error has occured! Please contact the administrator.");
-		});
+		if(props.type === "edit"){
+			axios.put('/box/' + data.id, data).then(response => {
+				setActiveStep(0);
+				props.setOpen(false);
+			}).catch(error => {
+				setError("An error has occured! Please contact the administrator.");
+			});
+		}
+		else{
+			axios.post('/box/', data).then(resp => {
+				setActiveStep(0);
+				props.setOpen(false);
+			}).catch(err => {
+				setError("An error has occured! Please contact the administrator.");
+			});
+		}
+
+
 
 
 	}

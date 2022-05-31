@@ -10,6 +10,7 @@ import {useEffect, useState} from "react";
 import axios from "../axios";
 import {Link} from "react-router-dom";
 import AddBoxModal from './AddBoxModal';
+import EditIcon from '@mui/icons-material/Edit';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -45,12 +46,13 @@ function UserBoxViewTable() {
     const [boxes, setBoxes] = useState([]);
     const [authorizedBoxes, setAuthorizedBoxes] = useState([]);
     const [open, setOpen] = useState(false);
+    const [type, setType] = useState("insert");
+    const [editingBoxData, setEditingBoxData] = useState(null);
 
     useEffect(function () {
         axios
             .get("/users/myboxes")
             .then((resp) => {
-                console.log(resp.data);
                 setBoxes(resp.data.boxes);
                 setAuthorizedBoxes(resp.data.authorizedBoxes);
             })
@@ -66,6 +68,7 @@ function UserBoxViewTable() {
                     <TableHead>
                         <StyledTableRow>
                             <StyledTableCell align="left">My Mailboxes</StyledTableCell>
+                            <StyledTableCell />
                             <StyledTableCell />
                             <StyledTableCell />
                         </StyledTableRow>
@@ -105,6 +108,13 @@ function UserBoxViewTable() {
                                                 <ViewIcon/>
                                             </IconButton>
                                         </Link>
+                                    </Tooltip>
+                                </StyledTableCell>
+                                <StyledTableCell align="left">
+                                    <Tooltip title="Edit">
+                                            <IconButton aria-label="view" onClick={() => {setOpen(true);setType("edit");setEditingBoxData(box);}}>
+                                                <EditIcon/>
+                                            </IconButton>
                                     </Tooltip>
                                 </StyledTableCell>
                             </TableRow>
@@ -167,10 +177,10 @@ function UserBoxViewTable() {
             </StyledTableContainer>
             }
 
-            <Fab color="primary" style={{position: 'absolute', bottom: 0, right: 0, margin: '1%'}} onClick={() => {setOpen(true)}}>
+            <Fab color="primary" style={{position: 'absolute', bottom: 0, right: 0, margin: '1%'}} onClick={() => {setOpen(true);setType("insert");}}>
             <AddIcon/>
             </Fab>
-            <AddBoxModal open={open} setOpen={setOpen}/>
+            <AddBoxModal open={open} setOpen={setOpen} type={type} box={editingBoxData}/>
         </>
 
     );
