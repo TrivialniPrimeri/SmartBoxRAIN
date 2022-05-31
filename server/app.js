@@ -24,14 +24,14 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-const allowedOrigins = ['https://trivialci.maticsulc.com/', 'https://trivialciapi.maticsulc.com/'];
+const allowedOrigins = ['https://trivialci.maticsulc.com', 'https://trivialciapi.maticsulc.com'];
 app.use(cors({
 	credentials: true,
 	origin(origin, callback) {
 	// Allow requests with no origin (mobile apps, curl)
 		if (!origin) return callback(null, true);
 		if (allowedOrigins.indexOf(origin) === -1) {
-			const msg = 'The CORS policy does not allow access from the specified Origin.';
+			const msg = 'The CORS policy does not allow access from the specified Origin: ' + origin;
 			return callback(new Error(msg), false);
 		}
 		return callback(null, true);

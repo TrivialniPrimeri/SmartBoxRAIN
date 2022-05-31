@@ -108,7 +108,7 @@ function Profile() {
           }}
         >
           <Card>
-            <CardMedia component="img" alt="profile picture" height="140" image={data.imgPath ? "http://localhost:81/" + data.imgPath : "https://st.depositphotos.com/1779253/5140/v/600/depositphotos_51405259-stock-illustration-male-avatar-profile-picture-use.jpg"} />
+            <CardMedia component="img" alt="profile picture" height="140" image={data.imgPath ? "https://trivialciapi.maticsulc.com/" + data.imgPath : "https://st.depositphotos.com/1779253/5140/v/600/depositphotos_51405259-stock-illustration-male-avatar-profile-picture-use.jpg"} />
             <CardContent>
               <Typography gutterBottom variant="h4" component="div">
                 {data.name}'s profile
