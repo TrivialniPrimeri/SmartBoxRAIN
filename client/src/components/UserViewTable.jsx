@@ -148,7 +148,7 @@ function UserViewTable() {
                                     <Grid item>
                                         <Typography sx={{ml:1}}>
                                            <Typography fontWeight={"bold"}>Last unlock:</Typography>
-                                           {moment(user.lastUnlock).format("DD.MM.YYYY HH:mm")}
+                                           {user.lastUnlock ? moment(user.lastUnlock).format("DD.MM.YYYY HH:mm") : ""}
                                         </Typography>
                                     </Grid>
                                 </Grid>

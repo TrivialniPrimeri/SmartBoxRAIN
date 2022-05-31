@@ -99,12 +99,14 @@ function BoxViewTable() {
                         >
                             <TableCell component="th" scope="row">
                                 <Grid container>
-                                    <Grid item lg={1}>
+                                    <Grid item>
                                         <InventoryIcon/>
                                     </Grid>
-                                    <Grid item lg={10} sx={{ml:2}}>
+                                    <Grid item>
+                                    </Grid>
+                                    <Grid item sx={{ml: 2}}>
                                         <Typography>
-                                        {box.nickname}
+                                            {`${box.nickname} (${box.boxId})`}
                                         </Typography>
                                     </Grid>
                                 </Grid>
