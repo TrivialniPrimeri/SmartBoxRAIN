@@ -174,8 +174,15 @@ module.exports = {
     },
 
 
-    unlock: function (req, res) {
-        const data = { "boxId": req.params.id, "tokenFormat": 5 };
+    unlock: async function (req, res) {
+
+        let boxId = req.params.id;
+        let userId = req.user?.id;
+
+        //lahko se doda overwrite za admina - zaenkrat ni
+        if(await boxModel.count({boxId: boxId, owner: userId}) == 0 && await boxModel.count({boxId: boxId, authorizedUsers: userId}) == 0) return res.sendStatus(403);
+
+        const data = { "boxId": boxId, "tokenFormat": 5 };
         axios.post(process.env.API_URI, data, {
             headers: {
                 "Authorization": "Bearer " + process.env.API_KEY,
