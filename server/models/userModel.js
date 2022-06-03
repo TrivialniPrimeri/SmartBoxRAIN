@@ -32,6 +32,7 @@ var userSchema = new Schema(
       value: String,
       expiration: Date,
     },
+    faceIndex: String
   },
   {
     timestamps: true,
