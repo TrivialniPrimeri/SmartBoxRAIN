@@ -11,7 +11,7 @@ module.exports = {
      * unlockController.list()
      */
     list: function (req, res) {
-        UnlockModel.find(function (err, unlocks) {
+        UnlockModel.find({}).populate("boxId").function (err, unlocks) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting unlock.',
@@ -50,11 +50,16 @@ module.exports = {
     /**
      * unlockController.create()
      */
-    create: function (req, res) {
+    create: async function (req, res) {
+
+        let boxId = req.body.boxId;
+
+        let boxObj = await BoxModel.findOne({boxId: boxId});
+
         var unlock = new UnlockModel({
 			userId : req.body.userId,
 			success : req.body.success,
-			boxId : req.body.boxId
+			boxId : boxObj._id
         });
 
         unlock.save(function (err, unlock) {

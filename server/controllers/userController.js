@@ -157,7 +157,11 @@ module.exports = {
       }
 
       if(req.file && user.imgPath != ""){
-        fs.unlinkSync(`public/${user.imgPath}`);
+        try{
+          fs.unlinkSync(`public/${user.imgPath}`);
+        } catch(err){
+          console.log('No image found ... probably a server wipe.');
+        }
       }
 
       user.name = req.body.name ? req.body.name : user.name;
