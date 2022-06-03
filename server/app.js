@@ -31,7 +31,7 @@ app.use(cors({
 	// Allow requests with no origin (mobile apps, curl)
 		if (!origin) return callback(null, true);
 		if (allowedOrigins.indexOf(origin) === -1) {
-			const msg = 'The CORS policy does not allow access from the specified Origin: ' + origin;
+			const msg = 'The CORS policy does not allow access from the specified Origin.' + origin;
 			return callback(new Error(msg), false);
 		}
 		return callback(null, true);
@@ -39,8 +39,8 @@ app.use(cors({
 })); //	default allow *
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({ extended: false, limit: '50mb' }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 

@@ -102,8 +102,7 @@ function BoxViewTable() {
                                     <Grid item>
                                         <InventoryIcon/>
                                     </Grid>
-                                    <Grid item>
-                                    </Grid>
+			   	    <Grid item></Grid>
                                     <Grid item sx={{ml: 2}}>
                                         <Typography>
                                             {`${box.nickname} (${box.boxId})`}

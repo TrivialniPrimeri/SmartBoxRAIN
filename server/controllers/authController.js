@@ -56,4 +56,9 @@ module.exports = {
 	logout: function (req, res) {
 		res.clearCookie('accessToken').clearCookie('refreshToken').sendStatus(200);
 	},
+
+	facelogin: function (req, res) {
+		console.log(req.body);
+		res.sendStatus(200);
+    },
 }

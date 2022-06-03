@@ -180,7 +180,7 @@ module.exports = {
         let userId = req.user?.id;
 
         //lahko se doda overwrite za admina - zaenkrat ni
-        if(await boxModel.count({boxId: boxId, owner: userId}) == 0 && await boxModel.count({boxId: boxId, authorizedUsers: ObjectId(userId)}) == 0) return res.sendStatus(403);
+        if(await boxModel.count({boxId: boxId, owner: userId}) == 0 && await boxModel.count({boxId: boxId, authorizedUsers: mongoose.Types.ObjectId(userId)}) == 0) return res.sendStatus(403);
 
         const data = { "boxId": boxId, "tokenFormat": 5 };
         axios.post(process.env.API_URI, data, {

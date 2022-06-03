@@ -1,4 +1,5 @@
 var UnlockModel = require('../models/unlockModel.js');
+var BoxModel = require('../models/boxModel.js');
 
 /**
  * unlockController.js
@@ -11,7 +12,7 @@ module.exports = {
      * unlockController.list()
      */
     list: function (req, res) {
-        UnlockModel.find({}).populate("boxId").function (err, unlocks) {
+        UnlockModel.find({}).populate("boxId").exec(function (err, unlocks) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting unlock.',
